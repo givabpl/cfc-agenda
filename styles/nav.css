@@ -1,0 +1,30 @@
+
+header {
+    margin: 0;
+    background-color: #dbdbdb;
+    padding: 1em;
+}
+
+nav {
+    margin: 0;
+}
+
+nav ul {
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav a {
+    padding: 1em;
+    margin-right: 2em;
+    text-decoration: none;
+    color: black;
+    align-items: center;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}

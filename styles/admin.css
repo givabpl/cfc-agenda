@@ -1,0 +1,125 @@
+
+.container-admin-banner{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ornaments{
+    width: 300px;
+}
+
+.logo-admin{
+    width: 400px;
+}
+
+h2{
+    font-size: 24px;
+}
+
+.container-table{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+table{
+    width: 90%;
+    margin: auto 0;
+}
+table, th, td{
+    border: 1px solid #363636;
+}
+
+table th{
+    padding: 11px 0 11px;
+    background-color: #9c9c9c;
+    color: #000000;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: left;
+    padding: 8px;
+}
+
+table tr{
+    border: 1px solid #ddd;
+}
+
+table td{
+    color: #000000;
+    font-size: 18px;
+    padding: 8px;
+}
+.container-admin-banner h1{
+    margin-top: 40px;
+    font-size: 30px;
+    color: rgb(57, 137, 228)
+}
+
+.container-lista-produtos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto 0;
+}
+
+.container-lista{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid rgb(83, 177, 221) 0.5px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 3px 0;
+}
+
+.container-lista h3{
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+table tbody tr td a, .botao-cadastrar, .botao-excluir{
+    padding: 3px 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: 0.7s;
+    border: none;
+    font-size: 18px;
+}
+
+
+table tbody tr td a:hover, .botao-cadastrar:hover, .botao-excluir:hover{
+    cursor: pointer;
+    filter: saturate(150%);
+}
+
+.botao-cadastrar{
+    background: rgb(35, 231, 45);
+    color: #000000;
+    font-weight: 600;
+    margin-top: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 10px 10px;
+    border: none;
+}
+
+
+.botao-editar{
+    color: #000000;
+    background: rgb(235, 213, 19);
+    padding: 4px;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+.botao-excluir{
+    color: #000000;
+    background: rgb(243, 29, 29)
+}
+
