@@ -21,7 +21,7 @@
         }
 
         //função para buscar todos os alunos
-        public function buscar_alunos()
+        public function buscar_alunos($aluno)
         {
             $sql = "SELECT * FROM alunos";
             try
@@ -40,7 +40,7 @@
         }
 
         // função para buscar alunos da categoria A
-        public function buscar_alunos_categoria_A(): array
+        public function buscar_alunos_categoria_A($aluno): array
         {
             $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'A' ORDER BY nome_aluno";
             try
@@ -65,7 +65,7 @@
         }
 
         // função para buscar alunos da categoria B
-        public function buscar_alunos_categoria_B(): array
+        public function buscar_alunos_categoria_B($aluno): array
         {
             $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'B' ORDER BY nome_aluno";
             try
@@ -90,7 +90,7 @@
         }
 
         // função para buscar alunos das categorias AB
-        public function buscar_alunos_categoria_AB(): array
+        public function buscar_alunos_categoria_AB($aluno): array
         {
             $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'AB' ORDER BY nome_aluno";
             try
@@ -115,10 +115,37 @@
         }
 
         // função para buscar um aluno
+        public function buscar_um_aluno($aluno): array
+        {
+            $sql = "SELECT * FROM alunos WHERE id_aluno = ? ORDER BY nome_aluno";
+            try
+            {
+                $stm = $this->db->prepare($sql);
+                $stm->bindValue(1, $aluno->getIdAluno());
+                $stm->execute();
+                $this->db = null;
+                return $stm->fetchAll(PDO::FETCH_OBJ);
+            }
+            catch (PDOException $e)
+            {
+                echo $e->getCode();
+                echo $e->getMessage();
+                echo "Problema ao buscar um aluno";
+            }
+        }
+
         // função para salvar aluno
+        public function salvar_aluno($aluno)
+        {
+            $sql = "INSERT INTO alunos (nome_aluno, categoria_aluno, celular_aluno,obs_aluno, aulas_restantes) VALUES (?,?,?,?,?)";
+            $stm = $this->db->prepare($sql);
+            $stm->bindValue(1, $aluno->getNomeAluno());
+            $stm->bindValue(2, $aluno->getCategoriaAluno());
+
+        }
         
         // função para alterar aluno
-        public function alterar_aluno(Aluno $aluno)
+        public function alterar_aluno($aluno)
         {
             $sql = "UPDATE alunos SET nome_aluno = ?, categoria_aluno = ?, celular_aluno = ?,obs_aluno = ?, aulas_restantes = ? WHERE id_aluno = ?";
             try

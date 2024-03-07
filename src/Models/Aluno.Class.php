@@ -2,7 +2,7 @@
 class Aluno {
     public function __construct(
         private ?int $id_aluno, 
-        private string $nome_aluno,
+        private string $nome_aluno, 
         private string $categorias_aluno, 
         private string $observacao, 
         private int $aulas_restantes) 
