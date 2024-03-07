@@ -68,16 +68,16 @@ class AgendamentoRepositorio {
         $sql = "INSERT INTO agendamentos (id_aluno, nome_aluno, data_aula, hora_inicio, hora_conclusao, id_instrutor, nome_instrutor, id_veiculo, categoria, modelo) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(1, $agendamento->getIdAluno());
-        $statement->bindValue(2, $agendamento->getNomeAluno());
+        $statement->bindValue(1, $agendamento->getAluno()->getId());
+        $statement->bindValue(2, $agendamento->getAluno()->getNome());
         $statement->bindValue(3, $agendamento->getDataAula());
         $statement->bindValue(4, $agendamento->getHoraInicio());
         $statement->bindValue(5, $agendamento->getHoraConclusao());
-        $statement->bindValue(6, $agendamento->getIdInstrutor());
-        $statement->bindValue(7, $agendamento->getNomeInstrutor());
-        $statement->bindValue(8, $agendamento->getIdVeiculo());
-        $statement->bindValue(9, $agendamento->getCategoriaVeiculo());
-        $statement->bindValue(10, $agendamento->getModeloVeiculo());
+        $statement->bindValue(6, $agendamento->getInstrutor()->getIdinstrutor());
+        $statement->bindValue(7, $agendamento->getInstrutor()->getNome());
+        $statement->bindValue(8, $agendamento->getVeiculo()->getIdVeiculo());
+        $statement->bindValue(9, $agendamento->getVeiculo()->getCategoria());
+        $statement->bindValue(10, $agendamento->getVeiculo()->getModelo());
         $statement->execute();
     }
 

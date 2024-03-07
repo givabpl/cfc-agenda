@@ -1,0 +1,5 @@
+no console do VS code:
+
+php -S localhost:8080
+
+Após concluido, abrir http://localhost:8080/admin.php no navegador

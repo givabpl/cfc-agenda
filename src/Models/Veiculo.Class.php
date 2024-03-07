@@ -1,10 +1,9 @@
 <?php
 class Veiculo {
-    private ?int $id_veiculo;
-    private string $modelo;
-    private string $categoria;
-
-    public function __construct(?int $id_veiculo, string $modelo, string $categoria) 
+    public function __construct(
+        private ?int $id_veiculo, 
+        private string $modelo, 
+        private string $categoria) 
     {
         $this->id_veiculo = $id_veiculo;
         $this->modelo = $modelo;
@@ -15,14 +14,14 @@ class Veiculo {
     {
         return $this->id_veiculo;
     }
-    public function getModelo(): string
+    public function getModeloVeiculo(): string
     {
         return $this->modelo;
     }
 
-    public function getCategoria(): string
+    public function getCategoriaVeiculo(): string
     {
         return $this->categoria;
     }
 }
-?>
+

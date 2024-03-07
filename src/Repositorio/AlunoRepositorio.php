@@ -11,6 +11,7 @@
             $this->pdo = $pdo;
         }
 
+        /* 
         private function formarObjeto($dados)
         {
             return new Aluno
@@ -21,9 +22,11 @@
                 $dados['observacao'],
                 $dados['aulas_restantes']
             );
-        }
+        }        
+        */
 
         // Categoria A
+        /* 
         public function categoriaA(): array
         {
             $sqlCategoriaA = "SELECT * FROM alunos WHERE categorias_aluno = 'A' ORDER BY nome_aluno";
@@ -37,8 +40,11 @@
 
             return $dadosCategoriaA;
         }
+        */
 
         // Categoria B
+        
+        /*
         public function categoriaB(): array
         {
             $sqlCategoriaB = "SELECT * FROM alunos WHERE categorias_aluno = 'B' ORDER BY nome_aluno";
@@ -52,8 +58,11 @@
 
             return $dadosCategoriaB;
         }
+        */
+        
 
         // Todos alunos
+        /* 
         public function buscarTodos()
         {
             $sql = "SELECT * FROM alunos ORDER BY nome_aluno";
@@ -71,18 +80,24 @@
 
             return $todosOsDados;
         }
+        */
 
         // Deletar aluno
+        /*
         public function deletar(int $id_aluno) // obj
         {
             $sql = "DELETE FROM alunos WHERE id_aluno=?";
             $statement = $this->pdo->prepare($sql);
             $statement->bindValue(1, $id_aluno);
             $statement->execute();
-            /* Anteriormente, usamos o método query() para fazer a busca dos dados, 
+            
+        }
+        */
+        /* Anteriormente, usamos o método query() para fazer a busca dos dados, 
             mas agora queremos trabalhar com instruções preparadas, ou seja, queremos 
             prepará-las antes de enviá-las, pois ainda enviaremos um parâmetro como ID. */
-        }
+
+
 
         // Salvar aluno
         public function salvar(Aluno $aluno)

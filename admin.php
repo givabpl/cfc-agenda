@@ -4,9 +4,7 @@ require "src/conexao-bd.php";
 require "src/Modelo/Agendamento.Class.php";
 require "src/Repositorio/AgendamentoRepositorio.php";
 
-// Crie uma instância do repositório de agendamentos
-
-
+// instância do repositório de agendamentos
 $agendamentoRepositorio = new AgendamentoRepositorio($pdo);
 $agendamentos = $agendamentoRepositorio->buscarTodos();
 
@@ -57,14 +55,14 @@ $agendamentos = $agendamentoRepositorio->buscarTodos();
             <tbody>
             <?php foreach ($agendamentos as $agendamento): ?>
                 <tr>
-                    <td><?= $agendamento->getNomeAluno(); ?></td>
+                    <td><?= $agendamento->getAluno()->getNome(); ?></td>
                     <td><?= $agendamento->getDataAula(); ?></td>
                     <td><?= $agendamento->getHoraInicio(); ?></td>
                     <td><?= $agendamento->getHoraConclusao(); ?></td>
-                    <td><?= $agendamento->getNomeInstrutor(); ?></td>
-                    <td><?= $agendamento->getModeloVeiculo(); ?></td>
-                    <td><?= $agendamento->getCategoriaVeiculo(); ?></td>
-                    <td><?= $agendamento->getModeloVeiculo(); ?></td>
+                    <td><?= $agendamento->getInstrutor()->getNome(); ?></td>
+                    <td><?= $agendamento->getVeiculo()->getModelo(); ?></td>
+                    <td><?= $agendamento->getVeiculo()->getCategoria(); ?></td>
+                    <td><?= $agendamento->getVeiculo()->getModelo(); ?></td>
                     <td><a class="botao-editar" href="editar-agendamento.php?id=<?= $agendamento->getIdAgendamento() ?>">Editar</a></td>
                     <td>
                         <form action="deletar-agendamento.php" method="post">
