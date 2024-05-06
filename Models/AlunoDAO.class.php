@@ -7,19 +7,6 @@
             parent:: __construct();
         }
 
-        // função para formar o objeto Aluno
-        private function formar_objeto($dados)
-        {
-            return new Aluno
-            (
-                $dados['id_aluno'],
-                $dados['nome_aluno'],
-                $dados['categorias_aluno'],
-                $dados['observacao'],
-                $dados['aulas_restantes']
-            );
-        }
-
         //função para buscar todos os alunos
         public function buscar_alunos($aluno)
         {
@@ -42,7 +29,7 @@
         // função para buscar alunos da categoria A
         public function buscar_alunos_categoria_A($aluno): array
         {
-            $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'A' ORDER BY nome_aluno";
+            $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'A' ORDER BY nome_aluno";
             try
             {
                 $stm = $this->db->query($sql);
@@ -67,7 +54,7 @@
         // função para buscar alunos da categoria B
         public function buscar_alunos_categoria_B($aluno): array
         {
-            $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'B' ORDER BY nome_aluno";
+            $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'B' ORDER BY nome_aluno";
             try
             {
                 $stm = $this->db->query($sql);
@@ -92,7 +79,7 @@
         // função para buscar alunos das categorias AB
         public function buscar_alunos_categoria_AB($aluno): array
         {
-            $sql = "SELECT * FROM alunos WHERE categorias_aluno = 'AB' ORDER BY nome_aluno";
+            $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'AB' ORDER BY nome_aluno";
             try
             {
                 $stm = $this->db->query($sql);
@@ -134,20 +121,10 @@
             }
         }
 
-        // função para salvar aluno
-        public function salvar_aluno($aluno)
+        // função para salvar/cadastrar aluno
+        public function inserir($aluno)
         {
-            $sql = "INSERT INTO alunos (nome_aluno, categoria_aluno, celular_aluno,obs_aluno, aulas_restantes) VALUES (?,?,?,?,?)";
-            $stm = $this->db->prepare($sql);
-            $stm->bindValue(1, $aluno->getNomeAluno());
-            $stm->bindValue(2, $aluno->getCategoriaAluno());
-
-        }
-        
-        // função para alterar aluno
-        public function alterar_aluno($aluno)
-        {
-            $sql = "UPDATE alunos SET nome_aluno = ?, categoria_aluno = ?, celular_aluno = ?,obs_aluno = ?, aulas_restantes = ? WHERE id_aluno = ?";
+            $sql = "INSERT INTO alunos (nome_aluno, categoria_aluno, celular_aluno, obs_aluno, email_aluno, senha_aluno) VALUES (?,?,?,?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
@@ -155,8 +132,34 @@
                 $stm->bindValue(2, $aluno->getCategoriaAluno());
                 $stm->bindValue(3, $aluno->getCelularAluno());
                 $stm->bindValue(4, $aluno->getObsAluno());
-                $stm->bindValue(5, $aluno->getAulasRestantesAluno());
-                $stm->bindValue(6, $aluno->getIdAluno());
+                $stm->bindValue(5, $aluno->getEmailAluno());
+                $stm->bindValue(6, $aluno->getSenhaAluno());
+                $stm->execute();
+                $this->db = null;
+                return "Aluno cadastrado com sucesso";
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getCode();
+                echo $e->getMessage();
+                echo "Problema ao cadastrar aluno";
+            }
+        }
+        
+        // função para alterar aluno
+        public function alterar_aluno($aluno)
+        {
+            $sql = "UPDATE alunos SET nome_aluno = ?, categoria_aluno = ?, celular_aluno = ?, obs_aluno = ?, email_aluno = ?, senha_aluno = ? WHERE id_aluno = ?";
+            try
+            {
+                $stm = $this->db->prepare($sql);
+                $stm->bindValue(1, $aluno->getNomeAluno());
+                $stm->bindValue(2, $aluno->getCategoriaAluno());
+                $stm->bindValue(3, $aluno->getCelularAluno());
+                $stm->bindValue(4, $aluno->getObsAluno());
+                $stm->bindValue(5, $aluno->getEmailAluno());
+                $stm->bindValue(6, $aluno->getSenhaAluno());
+                $stm->bindValue(7, $aluno->getIdAluno());
                 $stm->execute();
                 $this->db = null;
                 return "Aluno alterado com sucesso";
