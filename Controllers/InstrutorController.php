@@ -1,133 +1,136 @@
 <?php
-    class InstrutorRepositorio {
-        private PDO $pdo;
-        
-        public function __construct(PDO $pdo)
-        {
-            $this->pdo = $pdo;
-        }
 
-        private function formarObjeto($dados)
-        {
-            return new Instrutor
-            (
-                $dados['id_instrutor'],
-                $dados['nome_instrutor'],
-                $dados['categorias_instrutor'],
-                $dados['observacao']
-            );
-        }
+    if(!isset($_SESSION))
+        session_start(); 
 
-        // categoria A
-        public function categoriaA(): array
-        {
-            $sqlCategoriaA = "SELECT * FROM instrutores WHERE categorias_instrutor = 'A' ORDER BY nome_instrutor";
-            $statement = $this->pdo->query($sqlCategoriaA);
-            $alunosCategoriaA = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-            $dadosCategoriaA = array_map(function ($a) 
-            {
-                return $this->formarObjeto($a);
-            }, $alunosCategoriaA);
+    require_once "Models/Conexao.class.php";
+    require_once "Models/Instrutor.class.php";
+    require_once "Models/instrutorDAO.class.php";
 
-            return $dadosCategoriaA;
-        }
-
-        // categoria B
-        public function categoriaB(): array
-        {
-            $sqlCategoriaB = "SELECT * FROM instrutores WHERE categorias_instrutor = 'B' ORDER BY nome_instrutor";
-            $statement = $this->pdo->query($sqlCategoriaB);
-            $alunosCategoriaB = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-            $dadosCategoriaB = array_map(function ($b) 
-            {
-                return $this->formarObjeto($b);
-            }, $alunosCategoriaB);
-
-            return $dadosCategoriaB;
-        }
-
-        // categoria AB
-        public function categoriaAB(): array
-        {
-            $sqlCategoriaAB = "SELECT * FROM instrutores WHERE categorias_instrutor = 'AB' ORDER BY nome_instrutor";
-            $statement = $this->pdo->query($sqlCategoriaAB);
-            $alunosCategoriaAB = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-            $dadosCategoriaAB = array_map(function ($ab) 
-            {
-                return $this->formarObjeto($ab);
-            }, $alunosCategoriaAB);
-
-            return $dadosCategoriaAB;
-        }
-
-        // Todos instrutores
-        public function buscarTodos()
-        {
-            $sql = "SELECT * FROM instrutores ORDER BY nome_instrutor";
-            $statement = $this->pdo->query($sql); // query method expects an sql
-            // query method will return a statement
-            $dados = $statement->fetchAll(PDO::FETCH_ASSOC); 
-            // from statement we have a mthod called fetchAll()
-            // it's informing php to bring all the data trought PDO
-            // this gives back an assossiative array with all data ($dados)
-
-            $todosOsDados = array_map(function ($instrutor) 
-            {
-                return $this->formarObjeto($instrutor);
-            }, $dados);
-
-            return $todosOsDados;
-        }
-
-        // Deletar instrutor
-        public function deletar(int $id_instrutor) //obj
-        {
-            $sql = "DELETE FROM instrutores WHERE id_instrutor=?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1,$id_instrutor);
-            $statement->execute();
-            /* Anteriormente, usamos o método query() para fazer a busca dos dados, 
-            mas agora queremos trabalhar com instruções preparadas, ou seja, queremos 
-            prepará-las antes de enviá-las, pois ainda enviaremos um parâmetro como ID. */
-        }
+    class InstrutorController {
 
         // Salvar instrutor
-        public function salvar(Instrutor $instrutor)
+        public function inserir()
         {
-            $sql = "INSERT INTO instrutores (nome_instrutor, categorias_instrutor, observacao) VALUES (?,?,?)";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $instrutor->getNome());
-            $statement->bindValue(2, $instrutor->getCategorias());
-            $statement->bindValue(3, $instrutor->getObservacao());
-            $statement->execute();
+            $msg = array("","","");
+            if($_POST)
+            {
+                $erro = false;
+    
+                if(empty($_POST["nome_instrutor"]))
+                {
+                    $msg[0] = "Preencha o nome";
+                    $erro = true;
+                }
+                if(empty($_POST["categoria_instrutor"]))
+                {
+                    $msg[1] = "Selecione pelo menos uma categoria";
+                    $erro = true;
+                }
+                if(empty($_POST["celular_instrutor"]))
+                {
+                    $msg[2] = "Preencha o celular";
+                    $erro = true;
+                }
+                if(empty($_POST["obs_instrutor"]))
+                {
+                    $msg[3] = "";
+                    $erro = true;
+                }
+                if(!$erro)
+                {
+                    $instrutor = new Instrutor(nome_instrutor:$_POST["nome_instrutor"], categoria_instrutor:$_POST["categoria_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
+                    
+                    $instrutorDAO = new instrutorDAO();
+                    $instrutorDAO->inserir($instrutor);
+                    header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
+                }
+                require_once "Views/form_instrutor.php";
+            }
         }
 
         // Buscar instrutor
-        public function buscar(int $id_instrutor) //obj 
+        public function buscar_instrutores()
         {
-            $sql = "SELECT * FROM instrutores WHERE id_instrutor = ?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1,$id_instrutor);
-            $statement->execute();
+            $instrutorDAO = new instrutorDAO();
+            $retorno = $instrutorDAO->buscar_instrutores();
+            return $retorno;
+        }
 
-            $dados = $statement->fetch(PDO::FETCH_ASSOC);
+        public function listar_instrutores()
+        {
+            if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Administrador")
+            {
+                header("location:index.php");
+            }//if isset
+            $instrutorDAO = new instrutorDAO();
+            $retorno = $instrutorDAO->buscar_instrutores();
+            require_once "views/listar_instrutores.php";
+        }
 
-            return $this->formarObjeto($dados);
+        public function excluir()
+        {
+            if(isset($_GET["id"]))
+            {
+                $instrutor = new Instrutor($_GET["id"]);
+                $instrutorDAO = new instrutorDAO();
+                $ret = $instrutorDAO->excluir($instrutor);
+                header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
+            }
         }
 
         // Atualizar instrutor
-        public function atualizar(Instrutor $instrutor)
+        public function alterar()
         {
-            $sql = "UPDATE instrutores SET nome_instrutor = ?, categorias_instrutor = ?, observacao = ? WHERE id_instrutor = ?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $instrutor->getNome());
-            $statement->bindValue(2, $instrutor->getCategorias());
-            $statement->bindValue(3, $instrutor->getObservacao());
-            $statement->bindValue(4, $instrutor->getIdInstrutor());
-            $statement->execute();
+            if(isset($_GET["id"]))
+            {
+                $instrutor = new Instrutor($_GET["id"]);
+                $instrutorDAO = new instrutorDAO();
+                $retorno = $instrutorDAO->buscar_um_instrutor($instrutor);
+            }
+            
+            $msg = array("","","","","","","");
+            if($_POST)
+            {
+                $erro = false;
+                if(empty($_POST["nome_instrutor"]))
+                {
+                    $msg[0] = "Preencha o nome";
+                    $erro = true;
+                }
+                if(empty($_POST["categoria_instrutor"]))
+                {
+                    $msg[1] = "Selecione pelo menos uma categoria";
+                    $erro = true;
+                }
+                if(empty($_POST["celular_instrutor"]))
+                {
+                    $msg[2] = "Preencha o celular";
+                    $erro = true;
+                }
+                if(empty($_POST["obs_instrutor"]))
+                {
+                    $msg[3] = "";
+                    $erro = true;
+                }
+                if(!$erro)
+                {
+                    $instrutor = new Instrutor(nome_instrutor:$_POST["nome_instrutor"], categoria_instrutor:$_POST["categoria_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
+                    
+                    $instrutorDAO = new instrutorDAO();
+                    $instrutorDAO->inserir($instrutor);
+                    header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
+                }
+                require_once "Views/edit_instrutor.php";
+            }
+            
         }
 
+        public function gerar_pdf()
+        {
+            //buscar dados para o pdf
+            $instrutorDAO = new instrutorDAO();
+            $retorno = $instrutorDAO->buscar_instrutores();
+            require_once "views/instrutor_pdf.php";
+        }
     }

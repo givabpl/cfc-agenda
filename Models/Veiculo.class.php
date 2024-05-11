@@ -1,27 +1,27 @@
 <?php
 class Veiculo {
     public function __construct(
-        private ?int $id_veiculo, 
-        private string $modelo, 
-        private string $categoria) 
-    {
-        $this->id_veiculo = $id_veiculo;
-        $this->modelo = $modelo;
-        $this->categoria = $categoria;
-    }
+        private int $id_veiculo = 0, 
+        private string $modelo = "", 
+        private string $cor = "",
+        private string $categoria_veiculo = ""
+    ){}
 
-    public function getIdVeiculo(): ?int 
+    public function getIdVeiculo()
     {
         return $this->id_veiculo;
     }
-    public function getModeloVeiculo(): string
+    public function getModelo()
     {
         return $this->modelo;
     }
-
-    public function getCategoriaVeiculo(): string
+    public function getCor()
     {
-        return $this->categoria;
+        return $this->cor;
+    }
+    public function getCategoriaVeiculo()
+    {
+        return $this->categoria_veiculo;
     }
 }
 

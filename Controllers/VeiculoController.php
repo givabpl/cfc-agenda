@@ -1,119 +1,123 @@
 <?php
-    class VeiculoRepositorio {
-        private PDO $pdo;
 
-        /**
-        * @param PDO $pdo
-        */
-        
-        public function __construct(PDO $pdo)
-        {
-            $this->pdo = $pdo;
-        }
+    if(!isset($_SESSION))
+    session_start(); 
 
-        private function formarObjeto($dados)
-        {
-            return new Veiculo
-            (
-                $dados['id_veiculo'],
-                $dados['modelo'],
-                $dados['categoria']
-            );
-        }
-
-        // categoria A
-        public function categoriaA(): array
-        {
-            $sqlCategoriaA = "SELECT * FROM veiculos WHERE categoria = 'A' ORDER BY categoria";
-            $statement = $this->pdo->query($sqlCategoriaA);
-            $veiculosCategoriaA = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-            $dadosCategoriaA = array_map(function ($a) 
-            {
-                return $this->formarObjeto($a);
-            }, $veiculosCategoriaA);
-
-            return $dadosCategoriaA;
-        }
-
-        // categoria B
-        public function categoriaB(): array
-        {
-            $sqlCategoriaB = "SELECT * FROM veiculos WHERE categoria = 'B' ORDER BY categoria";
-            $statement = $this->pdo->query($sqlCategoriaB);
-            $veiculosCategoriaB = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
-            $dadosCategoriaB = array_map(function ($b) 
-            {
-                return $this->formarObjeto($b);
-            }, $veiculosCategoriaB);
-
-            return $dadosCategoriaB;
-        }
-
-        // Buscar todos
-        public function buscarTodos()
-        {
-            $sql = "SELECT * FROM veiculos ORDER BY modelo";
-            $statement = $this->pdo->query($sql); // query method expects an sql
-            // query method will return a statement
-            $dados = $statement->fetchAll(PDO::FETCH_ASSOC); 
-            // from statement we have a mthod called fetchAll()
-            // it's informing php to bring all the data trought PDO
-            // this gives back an assossiative array with all data ($dados)
-
-            $todosOsDados = array_map(function ($veiculo) 
-            {
-                return $this->formarObjeto($veiculo);
-            }, $dados);
-
-            return $todosOsDados;
-        }
-
-        // Deletar veiculo
-        public function deletar(int $id_veiculo) // obj
-        {
-            $sql = "DELETE FROM veiculos WHERE id_veiculo=?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $id_veiculo);
-            $statement->execute();
-            /* Anteriormente, usamos o método query() para fazer a busca dos dados, 
-            mas agora queremos trabalhar com instruções preparadas, ou seja, queremos 
-            prepará-las antes de enviá-las, pois ainda enviaremos um parâmetro como ID. */
-        }
-
+    require_once "Models/Conexao.class.php";
+    require_once "Models/Veiculo.class.php";
+    require_once "Models/veiculoDAO.class.php";
+    class VeiculoController {
+       
         // Salvar veiculo
-        public function salvar(Veiculo $veiculo)
+        public function inserir()
         {
-            $sql = "INSERT INTO veiculos (modelo, categoria) VALUES (?,?)";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $veiculo->getModelo());
-            $statement->bindValue(2, $veiculo->getCategoria());
-            $statement->execute();
+			$msg = array("","","");
+			if($_POST)
+			{
+				$erro = false;
+                if(empty($_POST["modelo"]))
+				{
+					$msg[0] = "Preencha o modelo";
+					$erro = true;
+				}
+				if(empty($_POST["cor"]))
+				{
+					$msg[1] = "Preencha a cor";
+					$erro = true;
+				}
+                if(empty($_POST["categoria_veiculo"]))
+				{
+					$msg[2] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
+                if(!$erro)
+				{
+					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria_veiculo:$_POST["categoria_veiculo"]);
+					
+					$veiculoDAO = new veiculoDAO();
+					$veiculoDAO->inserir($veiculo);
+					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
+				}
+                require_once "Views/form_veiculo.php";
+            }
         }
 
         // Buscar veiculo
-        public function buscar(int $id_veiculo) // obj
-        {
-            $sql = "SELECT * FROM veiculos WHERE id_veiculo = ?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $id_veiculo);
-            $statement->execute();
+        public function buscar_veiculos()
+		{
+			$veiculoDAO = new veiculoDAO();
+			$retorno = $veiculoDAO->buscar_veiculos();
+			return $retorno;
+		}
+        public function listar()
+		{
+			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Administrador")
+			{
+				header("location:index.php");
+			}//if isset
+			$veiculoDAO = new veiculoDAO();
+			$retorno = $veiculoDAO->buscar_veiculos();
+			require_once "views/listar_veiculos.php";
+		}
 
-            $dados = $statement->fetch(PDO::FETCH_ASSOC);
-
-            return $this->formarObjeto($dados);
-        }
+        public function excluir()
+		{
+			if(isset($_GET["id"]))
+			{
+				$veiculo = new Veiculo($_GET["id"]);
+				$veiculoDAO = new veiculoDAO();
+				$ret = $veiculoDAO->excluir_veiculo($veiculo);
+				header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
+			}
+		}
 
         // Atualizar veiculo
-        public function atualizar(Veiculo $veiculo)
+        public function alterar()
         {
-            $sql = "UPDATE veiculos SET modelo = ?, categoria = ? WHERE id_veiculo = ?";
-            $statement = $this->pdo->prepare($sql);
-            $statement->bindValue(1, $veiculo->getModelo());
-            $statement->bindValue(2, $veiculo->getCategoria());
-            $statement->bindValue(3, $veiculo->getIdVeiculo());
-            $statement->execute();
+            if(isset($_GET["id"]))
+			{
+				$veiculo = new Veiculo($_GET["id"]);
+				$veiculoDAO = new veiculoDAO();
+				$retorno = $veiculoDAO->buscar_um_veiculo($veiculo);
+			}
+			
+			$msg = array("","","");
+			if($_POST)
+			{
+				$erro = false;
+                if(empty($_POST["modelo"]))
+				{
+					$msg[0] = "Preencha o modelo";
+					$erro = true;
+				}
+				if(empty($_POST["cor"]))
+				{
+					$msg[1] = "Preencha a cor";
+					$erro = true;
+				}
+                if(empty($_POST["categoria_veiculo"]))
+				{
+					$msg[2] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
+                if(!$erro)
+				{
+					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria_veiculo:$_POST["categoria_veiculo"]);
+					
+					$veiculoDAO = new veiculoDAO();
+					$veiculoDAO->inserir($veiculo);
+					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
+				}
+                require_once "Views/edit_veiculo.php";
+            }
+			
         }
 
+        public function gerar_pdf()
+		{
+			//buscar dados para o pdf
+			$veiculoDAO = new veiculoDAO();
+			$retorno = $veiculoDAO->buscar_veiculos();
+			require_once "views/veiculo_pdf.php";
+		}
     }

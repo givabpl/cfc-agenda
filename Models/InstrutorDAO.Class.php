@@ -1,5 +1,5 @@
 <?php
-    class InstrutorDAO extends Conexao
+    class instrutorDAO extends Conexao
     {
         public function __construct()
         {
@@ -19,7 +19,7 @@
         }
 
         //função para buscar todos os instrutores
-        public function buscar_instrutores($instrutor)
+        public function buscar_instrutores()
         {
             $sql = "SELECT * FROM instrutores";
             try
@@ -38,9 +38,9 @@
         }
 
         // função para buscar instrutores da categoria A
-        public function buscar_instrutores_categoria_A($instrutor): array
+        public function buscar_instrutores_categoria_A($instrutor)
         {
-            $sql = "SELECT * FROM instrutores WHERE categorias_instrutor = 'A' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'A' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -63,9 +63,9 @@
         }
 
         // função para buscar instrutores da categoria B
-        public function buscar_instrutores_categoria_B($instrutor): array
+        public function buscar_instrutores_categoria_B($instrutor)
         {
-            $sql = "SELECT * FROM instrutores WHERE categorias_instrutor = 'B' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'B' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -88,9 +88,9 @@
         }
 
         // função para buscar instrutores das categorias AB
-        public function buscar_instrutores_categoria_AB($instrutor): array
+        public function buscar_instrutores_categoria_AB($instrutor)
         {
-            $sql = "SELECT * FROM instrutores WHERE categorias_instrutor = 'AB' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'AB' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -113,7 +113,7 @@
         }
 
         // função para buscar um instrutor
-        public function buscar_um_instrutor($instrutor): array
+        public function buscar_um_instrutor($instrutor)
         {
             $sql = "SELECT * FROM instrutores WHERE id_instrutor = ? ORDER BY nome_instrutor";
             try
@@ -132,7 +132,7 @@
             }
         }
         
-        public function salvar_instrutor($instrutor)
+        public function inserir($instrutor)
         {
             $sql = "INSERT INTO instrutores (nome_instrutor, categoria_instrutor, celular_instrutor, obs_instrutor) VALUES (?,?,?,?)";
             try
@@ -179,13 +179,13 @@
         }
 
         // função para deletar instrutor
-        public function excluir_instrutor($instrutor) // obj
+        public function excluir($id_instrutor) // obj
         {
             $sql = "DELETE FROM instrutores WHERE id_instrutor = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $instrutor->getIdInstrutor());
+                $stm->bindValue(1, $id_instrutor->getIdInstrutor());
                 $stm->execute();
                 $this->db = null;
                 return "Instrutor Excluído";

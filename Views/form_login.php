@@ -2,7 +2,7 @@
 	require_once "cabecalho.php";
 ?>
 <div class="content">
-	  <div class="container">
+	<div class="container">
 		<h1>Identificação</h1><br>
 		<form action="#" method="POST">
 			<div class="mb-3">
@@ -18,8 +18,8 @@
 			</div>
 			<input class="btn btn-primary" type="submit" value="Enviar">
 		</form>
-	  </div>
 	</div>
+</div>
 <?php
 	require_once "rodape.html";
 ?>

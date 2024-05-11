@@ -2,33 +2,32 @@
     class Instrutor 
     {
         public function __construct(
-            private ?int $id_instrutor,
-            private string $nome_instrutor,
-            private string $categorias_instrutor, 
-            private string $observacao
-        ) 
-        {
-            $this->id_instrutor = $id_instrutor;
-            $this->nome_instrutor = $nome_instrutor;
-            $this->categorias_instrutor = $categorias_instrutor;
-            $this->observacao = $observacao;
-        }
+            private int $id_instrutor = 0,
+            private string $nome_instrutor = "",
+            private string $categoria_instrutor = "", 
+            private string $celular_instrutor = "",
+            private string $obs_instrutor = ""
+        ){}
 
-        public function getIdinstrutor(): ?int 
+        public function getIdInstrutor()
         {
             return $this->id_instrutor;
         }
-        public function getNomeInstrutor(): string
+        public function getNomeInstrutor()
         {
             return $this->nome_instrutor;
         }
-        public function getCategoriaInstrutor(): string
+        public function getCategoriaInstrutor()
         {
-            return $this->categorias_instrutor;
+            return $this->categoria_instrutor;
         }
-        public function getObservacaoInstrutor(): string 
+        public function getCelularInstrutor()
         {
-            return $this->observacao;
+            return $this->celular_instrutor;
+        }
+        public function getObsInstrutor()
+        {
+            return $this->obs_instrutor;
         }
     }
 

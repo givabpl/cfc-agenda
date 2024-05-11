@@ -1,57 +1,30 @@
 <?php
-    class Agendamento
-    {
-        public function __construct(
-            private ?int $id_agendamento,
-            private Aluno $aluno,
-            private string $data_aula,
-            private string $hora_inicio,
-            private string $hora_conclusao,
-            private Instrutor $instrutor,
-            private Veiculo $veiculo
-        ) {
-            $this->id_agendamento = $id_agendamento;
-            $this->aluno = $aluno;
-            $this->data_aula = $data_aula;
-            $this->hora_inicio = $hora_inicio;
-            $this->hora_conclusao = $hora_conclusao;
-            $this->instrutor = $instrutor;
-            $this->veiculo = $veiculo;
-        }
-
-        public function getIdAgendamento(): ?int
-        {
-            return $this->id_agendamento;
-        }
-
-        public function getAluno(): Aluno
-        {
-            return $this->aluno;
-        }
-
-        public function getDataAula(): string
-        {
-            return $this->data_aula;
-        }
-
-        public function getHoraInicio(): string
-        {
-            return $this->hora_inicio;
-        }
-
-        public function getHoraConclusao(): string
-        {
-            return $this->hora_conclusao;
-        }
-
-        public function getInstrutor(): Instrutor
-        {
-            return $this->instrutor;
-        }
-
-        public function getVeiculo(): Veiculo
-        {
-            return $this->veiculo;
-        }
-    }
-
+   class Agendamento
+   {
+       private $duracao = 60; // Duração padrão da aula em minutos (1 hora)
+   
+       public function __construct(
+            private int $id_agendamento = 0, 
+            private Aluno $aluno, 
+            private Instrutor $instrutor, 
+            private Veiculo $veiculo, 
+            private string $data_ag, 
+            private string $horario){}
+   
+       // Métodos Getters e Setters...
+   
+       // Método para calcular o horário de término da aula
+       public function calcularTerminoAula()
+       {
+           // Converte a data e o horário do agendamento para um objeto DateTime
+           $dataHoraAgendamento = new DateTime($this->data_ag . ' ' . $this->horario);
+   
+           // Adiciona a duração da aula em minutos ao horário do agendamento
+           $dataHoraTermino = clone $dataHoraAgendamento;
+           $dataHoraTermino->add(new DateInterval('PT' . $this->duracao . 'M'));
+   
+           // Retorna a data e o horário de término da aula
+           return $dataHoraTermino->format('Y-m-d H:i:s');
+       }
+   }
+   

@@ -1,14 +1,20 @@
 <?php
-	class Usuario
+	class Usuario extends Conexao
 	{
-		public function __construct(private int $idusuario = 0, private string $nome = "", private string $tipo = "", private string $email = "", private string $senha = ""){}
+		public function __construct(
+			private int $idusuario = 0, 
+			private string $nome = "", 
+			private string $tipo = "", 
+			private string $email = "", 
+			private string $senha = ""
+		){}
 		
 		public function getIdusuario()
 		{
 			return $this->idusuario;
 		}
 		
-		public function getNome()
+		public function getNomeUsuario()
 		{
 			return $this->nome;
 		}
@@ -16,11 +22,11 @@
 		{
 			return $this->tipo;
 		}
-		public function getEmail()
+		public function getEmailUsuario()
 		{
 			return $this->email;
 		}
-		public function getSenha()
+		public function getSenhaUsuario()
 		{
 			return $this->senha;
 		}
