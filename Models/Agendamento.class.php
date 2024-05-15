@@ -11,8 +11,42 @@
             private string $data_ag, 
             private string $horario){}
    
-       // Métodos Getters e Setters...
-   
+       // Métodos Getters
+        public function getIdAgendamento()
+        {
+            return $this->id_agendamento;
+        }
+
+        public function getAluno(): Aluno
+        {
+            return $this->aluno;
+        }
+
+        public function getInstrutor(): Instrutor
+        {
+            return $this->instrutor;
+        }
+
+        public function getVeiculo(): Veiculo
+        {
+            return $this->veiculo;
+        }
+
+        public function getDataAg()
+        {
+            return $this->data_ag;
+        }
+
+        public function getHorario()
+        {
+            return $this->horario;
+        }
+
+        public function getDuracao()
+        {
+            return $this->duracao;
+        }
+        
        // Método para calcular o horário de término da aula
        public function calcularTerminoAula()
        {
