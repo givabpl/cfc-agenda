@@ -9,11 +9,13 @@
         // função para formar o objeto Instrutor
         private function formar_objeto($dados)
         {
+            $categoriaDAO = new categoriaDAO();
+            $categoria = $categoriaDAO->buscar_categoria_por_id($dados['id_categoria']);
             return new Instrutor
             (
                 $dados['id_instrutor'],
                 $dados['nome_instrutor'],
-                $dados['categorias_instrutor'],
+                $categoria,
                 $dados['observacao']
             );
         }
@@ -22,25 +24,28 @@
         public function buscar_instrutores()
         {
             $sql = "SELECT * FROM instrutores";
-            try
-            {
+            try {
                 $stm = $this->db->prepare($sql);
                 $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+                $instrutores = [];
+                foreach ($resultados as $row) {
+                    $instrutores[] = $this->formar_objeto($row);
+                }
                 $this->db = null;
-                return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch(PDOException $e)
-            {
+                return $instrutores;
+            } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar todos os instrutores";
+                return [];
             }
         }
 
         // função para buscar instrutores da categoria A
-        public function buscar_instrutores_categoria_A($instrutor)
+        public function buscar_instrutores_categoria_A()
         {
-            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'A' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria = 'A' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -63,9 +68,9 @@
         }
 
         // função para buscar instrutores da categoria B
-        public function buscar_instrutores_categoria_B($instrutor)
+        public function buscar_instrutores_categoria_B()
         {
-            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'B' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria = 'B' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -88,9 +93,9 @@
         }
 
         // função para buscar instrutores das categorias AB
-        public function buscar_instrutores_categoria_AB($instrutor)
+        public function buscar_instrutores_categoria_AB()
         {
-            $sql = "SELECT * FROM instrutores WHERE categoria_instrutor = 'AB' ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE categoria = 'AB' ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->query($sql);
@@ -113,22 +118,28 @@
         }
 
         // função para buscar um instrutor
-        public function buscar_um_instrutor($instrutor)
+        public function buscar_um_instrutor($id_instrutor)
         {
             $sql = "SELECT * FROM instrutores WHERE id_instrutor = ? ORDER BY nome_instrutor";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $instrutor->getIdInstrutor());
+                $stm->bindValue(1, $id_instrutor);
                 $stm->execute();
+                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                return $stm->fetchAll(PDO::FETCH_OBJ);
+                if ($resultado) {
+                    return $this->formar_objeto($resultado);
+                } else {
+                    return null;
+                }
             }
             catch (PDOException $e)
             {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar um instrutor";
+                return null;
             }
         }
         
@@ -179,7 +190,7 @@
         }
 
         // função para deletar instrutor
-        public function excluir($id_instrutor) // obj
+        public function excluir($id_instrutor) // obj - apenas $id
         {
             $sql = "DELETE FROM instrutores WHERE id_instrutor = ?";
             try

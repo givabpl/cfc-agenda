@@ -9,12 +9,14 @@
         // função para formar o objeto Veiculo
         private function formar_objeto($dados)
         {
+            $categoriaDAO = new categoriaDAO();
+            $categoria = $categoriaDAO->buscar_categoria_por_id($dados['id_categoria']);
             return new Veiculo
             (
                 $dados['id_veiculo'],
                 $dados['modelo'],
                 $dados['cor'],
-                $dados['categoria_veiculo'],
+                $categoria,
             );
         }
 
@@ -22,95 +24,90 @@
         public function buscar_veiculos()
         {
             $sql = "SELECT * FROM veiculos";
-            try
-            {
+            try {
                 $stm = $this->db->prepare($sql);
                 $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+                $veiculos = [];
+                foreach ($resultados as $row) {
+                    $veiculos[] = $this->formar_objeto($row);
+                }
                 $this->db = null;
-                return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch(PDOException $e)
-            {
+                return $veiculos;
+            } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar todos os veiculos";
+                return [];
             }
         }
 
         // função para buscar veiculos da categoria A
-        public function buscar_veiculos_categoria_A($veiculo)
+        public function buscar_veiculos_categoria_A()
         {
-            $sql = "SELECT * FROM veiculos WHERE categoria_veiculo = 'A' ORDER BY modelo";
-            try
+            $sql = "SELECT * FROM veiculos WHERE categoria = 'A' ORDER BY modelo";
+            try 
             {
                 $stm = $this->db->prepare($sql);
-				$stm->execute();
-				$this->db = null;
-				return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch (PDOException $e)
-            {
+                $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+                $veiculos = [];
+                foreach ($resultados as $row) {
+                    $veiculos[] = $this->formar_objeto($row);
+                }
+                $this->db = null;
+                return $veiculos;
+            } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar os veiculos de categoria A";
+                return [];
             }
         }
 
         // função para buscar veiculos da categoria B
-        public function buscar_veiculos_categoria_B($veiculo)
+        public function buscar_veiculos_categoria_B()
         {
-            $sql = "SELECT * FROM veiculos WHERE categoria_veiculo = 'B' ORDER BY modelo";
-            try
+            $sql = "SELECT * FROM veiculos WHERE categoria = 'B' ORDER BY modelo";
+            try 
             {
                 $stm = $this->db->prepare($sql);
-				$stm->execute();
-				$this->db = null;
-				return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch (PDOException $e)
-            {
+                $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+                $veiculos = [];
+                foreach ($resultados as $row) {
+                    $veiculos[] = $this->formar_objeto($row);
+                }
+                $this->db = null;
+                return $veiculos;
+            } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar os veiculos de categoria B";
-            }
-        }
-
-        // função para buscar veiculos das categoria AB
-        public function buscar_veiculos_categoria_AB($veiculo)
-        {
-            $sql = "SELECT * FROM veiculos WHERE categoria_veiculo = 'AB' ORDER BY modelo";
-            try
-            {
-                $stm = $this->db->prepare($sql);
-				$stm->execute();
-				$this->db = null;
-				return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch (PDOException $e)
-            {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar os veiculos de categoria AB";
+                return [];
             }
         }
 
         // função para buscar um veiculo
-        public function buscar_um_veiculo($veiculo)
+        public function buscar_um_veiculo($id_veiculo): ?Veiculo
         {
             $sql = "SELECT * FROM veiculos WHERE id_veiculo = ? ORDER BY modelo";
-            try
-            {
+            try {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $veiculo->getIdVeiculo());
+                $stm->bindValue(1, $id_veiculo);
                 $stm->execute();
+                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                return $stm->fetchAll(PDO::FETCH_OBJ);
-            }
-            catch (PDOException $e)
-            {
+                if ($resultado) {
+                    return $this->formar_objeto($resultado);
+                } else {
+                    return null;
+                }
+            } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar um veiculo";
+                return null;
             }
         }
         
@@ -165,15 +162,20 @@
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_veiculo->getIdVeiculo());
+                $stm->bindValue(1, $id_veiculo);
                 $stm->execute();
+                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                return "Veiculo Excluído";
-            }
-            catch(PDOException $e)
-            {
-                $this->db = null;
-                return "Problema ao excluir um veiculo";
+                if ($resultado) {
+                    return $this->formar_objeto($resultado);
+                } else {
+                    return null;
+                }
+            } catch (PDOException $e) {
+                echo $e->getCode();
+                echo $e->getMessage();
+                echo "Problema ao excluir um veiculo";
+                return null;
             }
         }
     }

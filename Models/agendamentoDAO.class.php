@@ -8,7 +8,7 @@
         }
     
         // Método para criar um novo agendamento
-        public function criar_agendamento(Agendamento $agendamento): bool
+        public function criar_agendamento(Agendamento $agendamento)
         {
             $sql = "INSERT INTO agendamentos (id_aluno, id_instrutor, id_veiculo, data_ag, horario) VALUES (?, ?, ?, ?, ?)";
             try {
@@ -26,7 +26,7 @@
         }
     
         // Método para buscar agendamentos por ID do aluno
-        public function buscar_agendamentos_por_aluno(int $id_aluno): array
+        public function buscar_agendamentos_por_aluno($id_aluno)
         {
             $sql = "SELECT * FROM agendamentos WHERE id_aluno = ?";
             try {
@@ -46,7 +46,7 @@
         }
     
         // Método para atualizar um agendamento
-        public function atualizar_agendamento(Agendamento $agendamento): bool
+        public function atualizar_agendamento(Agendamento $agendamento)
         {
             $sql = "UPDATE agendamentos SET id_aluno = ?, id_instrutor = ?, id_veiculo = ?, data_ag = ?, horario = ? WHERE id_agendamento = ?";
             try {
@@ -64,7 +64,7 @@
         }
     
         // Método para excluir um agendamento
-        public function excluir_agendamento(int $id_agendamento): bool
+        public function excluir_agendamento($id_agendamento)
         {
             $sql = "DELETE FROM agendamentos WHERE id_agendamento = ?";
             try {
@@ -77,13 +77,18 @@
         }
     
         // Método privado para formar um objeto Agendamento a partir de um array de dados
-        private function formar_objeto(array $dados): Agendamento
+        private function formar_objeto($dados): Agendamento
         {
-            // Obs: Criar métodos estáticos para buscar os objetos Aluno, Instrutor e Veiculo por ID
-            $aluno = alunoDAO::buscarPorId($dados['id_aluno']);
-            $instrutor = instrutorDAO::buscarPorId($dados['id_instrutor']);
-            $veiculo = veiculoDAO::buscarPorId($dados['id_veiculo']);
-    
+            // Instanciando as DAOs
+            $alunoDAO = new alunoDAO();
+            $instrutorDAO = new instrutorDAO();
+            $veiculoDAO = new veiculoDAO();
+
+            // Buscando os objetos completos usando os IDs
+            $aluno = $alunoDAO->buscar_um_aluno($dados['id_aluno']);
+            $instrutor = $instrutorDAO->buscar_um_instrutor($dados['id_instrutor']);
+            $veiculo = $veiculoDAO->buscar_um_veiculo($dados['id_veiculo']);
+
             return new Agendamento(
                 $dados['id_agendamento'],
                 $aluno,

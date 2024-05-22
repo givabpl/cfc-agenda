@@ -4,7 +4,7 @@
         public function __construct(
             private int $id_instrutor = 0,
             private string $nome_instrutor = "",
-            private string $categoria_instrutor = "", 
+            private Categoria $categoria, 
             private string $celular_instrutor = "",
             private string $obs_instrutor = ""
         ){}
@@ -19,7 +19,7 @@
         }
         public function getCategoriaInstrutor()
         {
-            return $this->categoria_instrutor;
+            return $this->categoria;
         }
         public function getCelularInstrutor()
         {

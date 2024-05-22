@@ -10,20 +10,20 @@
         // formar objeto Aluno a partir de array de dados
         private function formar_objeto($dados): Aluno
         {
+            $categoriaDAO = new categoriaDAO();
+            $categoria = $categoriaDAO->buscar_categoria_por_id($dados['id_categoria']);
             return new Aluno(
                 $dados['id_aluno'],
                 $dados['aulas_restantes'],
                 $dados['nome_aluno'],
-                $dados['categoria_aluno'],
+                $categoria,
                 $dados['celular_aluno'],
-                $dados['obs_aluno'],
-                $dados['email_aluno'],
-                $dados['senha_aluno']
+                $dados['obs_aluno']
             );
         }
 
         // Função para buscar todos os alunos
-        public function buscar_alunos(): array
+        public function buscar_alunos()
         {
             $sql = "SELECT * FROM alunos";
             try {
@@ -45,7 +45,7 @@
         }
 
         // Função para buscar alunos da categoria A
-        public function buscar_alunos_categoria_A(): array
+        public function buscar_alunos_categoria_A()
         {
             $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'A' ORDER BY nome_aluno";
             try {
@@ -67,7 +67,7 @@
         }
 
         // Função para buscar alunos da categoria B
-        public function buscar_alunos_categoria_B(): array
+        public function buscar_alunos_categoria_B()
         {
             $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'B' ORDER BY nome_aluno";
             try {
@@ -89,7 +89,7 @@
         }
 
         // Função para buscar alunos das categorias AB
-        public function buscar_alunos_categoria_AB(): array
+        public function buscar_alunos_categoria_AB()
         {
             $sql = "SELECT * FROM alunos WHERE categoria_aluno = 'AB' ORDER BY nome_aluno";
             try {
@@ -135,7 +135,7 @@
         // função para salvar/cadastrar aluno
         public function inserir($aluno)
         {
-            $sql = "INSERT INTO alunos (aulas_restantes, nome_aluno, categoria_aluno, celular_aluno, obs_aluno, email_aluno, senha_aluno) VALUES (?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO alunos (aulas_restantes, nome_aluno, categoria_aluno, celular_aluno, obs_aluno) VALUES (?,?,?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
@@ -144,8 +144,6 @@
                 $stm->bindValue(3, $aluno->getCategoriaAluno());
                 $stm->bindValue(4, $aluno->getCelularAluno());
                 $stm->bindValue(5, $aluno->getObsAluno());
-                $stm->bindValue(6, $aluno->getEmailAluno());
-                $stm->bindValue(7, $aluno->getSenhaAluno());
                 $stm->execute();
                 $this->db = null;
                 return "Aluno cadastrado com sucesso";
@@ -161,7 +159,7 @@
         // função para alterar aluno
         public function alterar_aluno($aluno)
         {
-            $sql = "UPDATE alunos SET aulas_restantes =?, nome_aluno = ?, categoria_aluno = ?, celular_aluno = ?, obs_aluno = ?, email_aluno = ?, senha_aluno = ? WHERE id_aluno = ?";
+            $sql = "UPDATE alunos SET aulas_restantes =?, nome_aluno = ?, categoria_aluno = ?, celular_aluno = ?, obs_aluno = ? WHERE id_aluno = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
@@ -170,9 +168,7 @@
                 $stm->bindValue(3, $aluno->getCategoriaAluno());
                 $stm->bindValue(4, $aluno->getCelularAluno());
                 $stm->bindValue(5, $aluno->getObsAluno());
-                $stm->bindValue(6, $aluno->getEmailAluno());
-                $stm->bindValue(7, $aluno->getSenhaAluno());
-                $stm->bindValue(8, $aluno->getIdAluno());
+                $stm->bindValue(6, $aluno->getIdAluno());
                 $stm->execute();
                 $this->db = null;
                 return "Aluno alterado com sucesso";
@@ -186,21 +182,26 @@
         }
 
         // função para deletar aluno
-        public function excluir_aluno($id_aluno) // obj
+        public function excluir_aluno($id_aluno) // obj - apenas $id
         {
             $sql = "DELETE FROM alunos WHERE id_aluno = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_aluno->getIdAluno());
+                $stm->bindValue(1, $id_aluno);
                 $stm->execute();
+                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                return "Aluno Excluído";
-            }
-            catch(PDOException $e)
-            {
-                $this->db = null;
-                return "Problema ao excluir um aluno";
+                if ($resultado) {
+                    return $this->formar_objeto($resultado);
+                } else {
+                    return null;
+                }
+            } catch (PDOException $e) {
+                echo $e->getCode();
+                echo $e->getMessage();
+                echo "Problema ao excluir um aluno";
+                return null;
             }
         }
     }

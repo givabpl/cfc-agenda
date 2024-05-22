@@ -5,11 +5,9 @@
             private int $id_aluno = 0, 
             private int $aulas_restantes = 0,
             private string $nome_aluno = "", 
-            private string $categoria_aluno = "", 
+            private Categoria $categoria, 
             private string $celular_aluno = "",
             private string $obs_aluno = "", 
-            private string $email_aluno = "",
-            private string $senha_aluno = ""
         ) {}
 
         public function getIdAluno()
@@ -26,7 +24,7 @@
         }
         public function getCategoriaAluno()
         { 
-            return $this->categoria_aluno; 
+            return $this->categoria; 
         }
         public function getCelularAluno()
         { 
@@ -35,14 +33,6 @@
         public function getObsAluno()
         { 
             return $this->obs_aluno; 
-        }
-        public function getEmailAluno()
-        { 
-            return $this->email_aluno; 
-        }
-        public function getSenhaAluno()
-        { 
-            return $this->senha_aluno; 
         }
 
     }

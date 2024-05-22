@@ -4,7 +4,7 @@ class Veiculo {
         private int $id_veiculo = 0, 
         private string $modelo = "", 
         private string $cor = "",
-        private string $categoria_veiculo = ""
+        private Categoria $categoria,
     ){}
 
     public function getIdVeiculo()
@@ -21,7 +21,7 @@ class Veiculo {
     }
     public function getCategoriaVeiculo()
     {
-        return $this->categoria_veiculo;
+        return $this->categoria;
     }
 }
 
