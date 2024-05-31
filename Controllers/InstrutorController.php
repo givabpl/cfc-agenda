@@ -12,7 +12,7 @@
         // Salvar instrutor
         public function inserir()
         {
-            $msg = array("","","");
+            $msg = array("","","","");
             if($_POST)
             {
                 $erro = false;
@@ -22,7 +22,7 @@
                     $msg[0] = "Preencha o nome";
                     $erro = true;
                 }
-                if(empty($_POST["categoria_instrutor"]))
+                if(empty($_POST["categoria"]))
                 {
                     $msg[1] = "Selecione pelo menos uma categoria";
                     $erro = true;
@@ -39,10 +39,17 @@
                 }
                 if(!$erro)
                 {
-                    $instrutor = new Instrutor(nome_instrutor:$_POST["nome_instrutor"], categoria_instrutor:$_POST["categoria_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
+                    $categoriaDAO = new categoriaDAO();
+					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+
+                    $instrutor = new Instrutor(
+                        nome_instrutor:$_POST["nome_instrutor"], 
+                        categoria:$categoria,
+                        celular_instrutor:$_POST["celular_instrutor"], 
+                        obs_instrutor:$_POST["obs_instrutor"]);
                     
                     $instrutorDAO = new instrutorDAO();
-                    $instrutorDAO->inserir($instrutor);
+                    $ret = $instrutorDAO->inserir($instrutor);
                     header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
                 }
                 require_once "Views/form_instrutor.php";
@@ -72,9 +79,8 @@
         {
             if(isset($_GET["id"]))
             {
-                $instrutor = new Instrutor($_GET["id"]);
                 $instrutorDAO = new instrutorDAO();
-                $ret = $instrutorDAO->excluir($instrutor);
+                $ret = $instrutorDAO->excluir($_GET["id"]);
                 header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
             }
         }
@@ -84,12 +90,11 @@
         {
             if(isset($_GET["id"]))
             {
-                $instrutor = new Instrutor($_GET["id"]);
                 $instrutorDAO = new instrutorDAO();
-                $retorno = $instrutorDAO->buscar_um_instrutor($instrutor);
+                $instrutor = $instrutorDAO->buscar_um_instrutor($_GET["id"]);
             }
             
-            $msg = array("","","","","","","");
+            $msg = array("","","","");
             if($_POST)
             {
                 $erro = false;
@@ -98,7 +103,7 @@
                     $msg[0] = "Preencha o nome";
                     $erro = true;
                 }
-                if(empty($_POST["categoria_instrutor"]))
+                if(empty($_POST["categoria"]))
                 {
                     $msg[1] = "Selecione pelo menos uma categoria";
                     $erro = true;
@@ -115,15 +120,21 @@
                 }
                 if(!$erro)
                 {
-                    $instrutor = new Instrutor(nome_instrutor:$_POST["nome_instrutor"], categoria_instrutor:$_POST["categoria_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
+                    $categoriaDAO = new categoriaDAO();
+					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+
+                    $instrutor = new Instrutor(
+                        nome_instrutor:$_POST["nome_instrutor"], 
+                        categoria:$categoria, 
+                        celular_instrutor:$_POST["celular_instrutor"], 
+                        obs_instrutor:$_POST["obs_instrutor"]);
                     
                     $instrutorDAO = new instrutorDAO();
-                    $instrutorDAO->inserir($instrutor);
+                    $ret = $instrutorDAO->inserir($instrutor);
                     header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
                 }
-                require_once "Views/edit_instrutor.php";
+                require_once "Views/edit-instrutor.php";
             }
-            
         }
 
         public function gerar_pdf()

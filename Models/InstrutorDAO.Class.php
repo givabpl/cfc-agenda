@@ -7,10 +7,10 @@
         }
 
         // função para formar o objeto Instrutor
-        private function formar_objeto($dados)
+        private function formar_objeto($dados): Instrutor
         {
             $categoriaDAO = new categoriaDAO();
-            $categoria = $categoriaDAO->buscar_categoria_por_id($dados['id_categoria']);
+            $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Instrutor
             (
                 $dados['id_instrutor'],
@@ -118,9 +118,9 @@
         }
 
         // função para buscar um instrutor
-        public function buscar_um_instrutor($id_instrutor)
+        public function buscar_um_instrutor($id_instrutor): ?Instrutor
         {
-            $sql = "SELECT * FROM instrutores WHERE id_instrutor = ? ORDER BY nome_instrutor";
+            $sql = "SELECT * FROM instrutores WHERE id_instrutor = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
@@ -168,7 +168,7 @@
         // função para alterar instrutor
         public function alterar_instrutor($instrutor)
         {
-            $sql = "UPDATE instrutores SET nome_instrutor = ?, categoria_instrutor = ?, celular_instrutor = ?,obs_instrutor = ? WHERE id_instrutor = ?";
+            $sql = "UPDATE instrutores SET nome_instrutor = ?, categoria = ?, celular_instrutor = ?,obs_instrutor = ? WHERE id_instrutor = ?";
             try
             {
                 $stm = $this->db->prepare($sql);

@@ -8,7 +8,7 @@
 		
 		public function autenticar($usuario)
 		{
-			$sql = "SELECT idusuario, tipo FROM usuario WHERE email = ? AND senha = ?";
+			$sql = "SELECT idusuario, tipo FROM usuarios WHERE email = ? AND senha = ?";
 			$stm = $this->db->prepare($sql);
 			$stm->bindValue(1, $usuario->getEmail());
 			$stm->bindValue(2, $usuario->getSenha());
@@ -19,7 +19,7 @@
 		}
 		public function inserir($usuario)
 		{
-			$sql = "INSERT INTO usuario (nome, tipo, email, senha) VALUES(?,?,?,?)";
+			$sql = "INSERT INTO usuarios (nome, tipo, email, senha) VALUES(?,?,?,?)";
 			try
 			{
 				$stm = $this->db->prepare($sql);
@@ -39,7 +39,7 @@
 		}
 		public function buscar_email($usuario)
 		{
-			$sql = "SELECT email FROM usuario WHERE email = ?";
+			$sql = "SELECT email FROM usuarios WHERE email = ?";
 			try
 			{
 				$stm = $this->db->prepare($sql);

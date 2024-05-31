@@ -8,8 +8,9 @@
             private Aluno $aluno, 
             private Instrutor $instrutor, 
             private Veiculo $veiculo, 
-            private string $data_ag, 
-            private string $horario){}
+            private string $data_ag, // data do agendamento
+            private string $horario
+        ){}
    
        // Métodos Getters
         public function getIdAgendamento()

@@ -6,6 +6,31 @@
         {
             parent::__construct();
         }
+
+        // Método privado para formar um objeto Agendamento a partir de um array de dados
+        private function formar_objeto($dados): Agendamento
+        {
+            $alunoDAO = new alunoDAO();
+            $aluno = $alunoDAO->buscar_um_aluno($dados['id_aluno']);
+
+            $instrutorDAO = new instrutorDAO();
+            $instrutor = $instrutorDAO->buscar_um_instrutor($dados['id_instrutor']);
+
+            $veiculoDAO = new veiculoDAO();
+            $veiculo = $veiculoDAO->buscar_um_veiculo($dados['id_veiculo']);
+
+            // $categoriaDAO = new categoriaDAO();
+            // $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
+            return new Agendamento(
+                $dados['id_ag'],
+                $aluno,
+                $instrutor,
+                $veiculo,
+                $dados['data_ag'],
+                $dados['horario']
+            );
+        }
+
     
         // Método para criar um novo agendamento
         public function criar_agendamento(Agendamento $agendamento)
@@ -25,6 +50,44 @@
             }
         }
     
+        // Método para buscar todos os agendamentos
+        public function buscar_agendamentos()
+        {
+            $sql = "SELECT * FROM agendamentos";
+            try {
+                $stm = $this->db->prepare($sql);
+                $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+                $agendamentos = [];
+                foreach ($resultados as $row) {
+                    $agendamentos[] = $this->formar_objeto($row);
+                }
+                return $agendamentos;
+            } catch (PDOException $e) {
+                throw new Exception("Erro ao buscar agendamentos: " . $e->getMessage(), $e->getCode());
+            }
+        }
+
+        // Método para buscar um agendamento por ID
+        public function buscar_agendamento_por_id($id_agendamento)
+        {
+            $sql = "SELECT * FROM agendamentos WHERE id_agendamento = ?";
+            try {
+                $stm = $this->db->prepare($sql);
+                $stm->bindValue(1, $id_agendamento);
+                $stm->execute();
+                $dados = $stm->fetch(PDO::FETCH_ASSOC);
+                if ($dados) {
+                    return $this->formar_objeto($dados);
+                }
+                return null;
+            } catch (PDOException $e) {
+                throw new Exception("Erro ao buscar agendamento: " . $e->getMessage(), $e->getCode());
+            }
+        }
+
+
         // Método para buscar agendamentos por ID do aluno
         public function buscar_agendamentos_por_aluno($id_aluno)
         {
@@ -76,28 +139,7 @@
             }
         }
     
-        // Método privado para formar um objeto Agendamento a partir de um array de dados
-        private function formar_objeto($dados): Agendamento
-        {
-            // Instanciando as DAOs
-            $alunoDAO = new alunoDAO();
-            $instrutorDAO = new instrutorDAO();
-            $veiculoDAO = new veiculoDAO();
-
-            // Buscando os objetos completos usando os IDs
-            $aluno = $alunoDAO->buscar_um_aluno($dados['id_aluno']);
-            $instrutor = $instrutorDAO->buscar_um_instrutor($dados['id_instrutor']);
-            $veiculo = $veiculoDAO->buscar_um_veiculo($dados['id_veiculo']);
-
-            return new Agendamento(
-                $dados['id_agendamento'],
-                $aluno,
-                $instrutor,
-                $veiculo,
-                $dados['data_ag'],
-                $dados['horario']
-            );
-        }
+        
     }
     
  

@@ -14,7 +14,7 @@
 			return $this->idusuario;
 		}
 		
-		public function getNomeUsuario()
+		public function getNome()
 		{
 			return $this->nome;
 		}
@@ -22,11 +22,11 @@
 		{
 			return $this->tipo;
 		}
-		public function getEmailUsuario()
+		public function getEmail()
 		{
 			return $this->email;
 		}
-		public function getSenhaUsuario()
+		public function getSenha()
 		{
 			return $this->senha;
 		}

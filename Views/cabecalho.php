@@ -23,7 +23,7 @@
 			</li> 		
 		</ul>
 		<?php
-			if(isset($_SESSION["id"]))
+			if(isset($_SESSION["tipo"]) && $_SESSION["tipo"] == "Secretaria")
 			{
 				echo "<ul class='navbar-nav mr-auto'>
 				
@@ -49,19 +49,25 @@
 				  echo "<div class='my-2 my-lg-0'>
 					  <ul class='navbar-nav mr-auto'>
 					  <li class='nav-item'>
-					  <span class='nav-link'>
-					  Olá, {$_SESSION['nome']}
-					  </span></li></ul></div>";
+					  </li></ul></div>";
+			}
+			echo "</ul>";
+			echo "<div class='collapse navbar-collapse justify-content-end'>";
+			echo "<ul class='navbar-nav'>";
+			if(!isset($_SESSION["idusuario"]))
+			{
+				echo "<li class='nav-item'>
+					<a class='nav-link' href='index.php?controle=usuarioController&metodo=inserir'>Cadastre-se</a>
+					</li>
+					<li class='nav-item'>
+					<a class='nav-link' href='index.php?controle=usuarioController&metodo=login'>Entrar</a>
+					</li>";
 			}
 			else
 			{
-				 echo "<div class='collapse navbar-collapse justify-content-end'>
-					  <ul class='navbar-nav'>
-						<li class='nav-item'>
-							<span class='nav-link'><div id='meu-botao'></div></span>
-						</li>
-					</ul>
-				</div>";
+				echo "<li class='nav-item'>
+					<a class='nav-link' href='index.php?controle=usuarioController&metodo=logout'>Sair</a>
+					</li>";
 			}
 			?>	
 		</div>

@@ -2,12 +2,13 @@
     class Aluno 
     {
         public function __construct(
+            private Categoria $categoria, 
             private int $id_aluno = 0, 
             private int $aulas_restantes = 0,
             private string $nome_aluno = "", 
-            private Categoria $categoria, 
             private string $celular_aluno = "",
             private string $obs_aluno = "", 
+            private string $imagem = ""
         ) {}
 
         public function getIdAluno()
@@ -33,6 +34,15 @@
         public function getObsAluno()
         { 
             return $this->obs_aluno; 
+        }
+        public function getImagem()
+        { 
+            return $this->imagem; 
+        }
+
+        public function setImagem(string $imagem) 
+        { 
+            $this->imagem = $imagem; 
         }
 
     }

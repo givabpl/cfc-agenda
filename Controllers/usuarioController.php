@@ -34,6 +34,7 @@
 						session_start();
 						$_SESSION["idusuario"] = $retorno[0]->idusuario;
 						$_SESSION["tipo"] = $retorno[0]->tipo;
+						$_SESSION["nome"] = $retorno[0]->nome;
 						header("location:index.php");
 					}
 					else
@@ -43,7 +44,7 @@
 					
 				}
 			}
-			require_once "views/form_login.php";
+			require_once "views/form-login.php";
 		}
 		public function logout()
 		{
@@ -103,7 +104,7 @@
 				//inserir no BD
 				if(!$erro)
 				{
-					$usuario = new Usuario(0, $_POST["nome"], "Cliente" , $_POST["email"], md5($_POST["senha"]));
+					$usuario = new Usuario(0, $_POST["nome"], "Secretaria" , $_POST["email"], md5($_POST["senha"]));
 					$usuarioDAO = new usuarioDAO();
 					$retorno = $usuarioDAO->inserir($usuario);
 					if(!isset($_SESSION))
@@ -114,16 +115,16 @@
 					if($retorno != 0)
 					{
 						$_SESSION["idusuario"] = $retorno;
-						$_SESSION["tipo"] = "Cliente";
+						$_SESSION["tipo"] = "Secretaria";
 						header("location:index.php");
 					}
 					else
 					{
-						$mensagem = "Problema ao inserir cliente";
+						$mensagem = "Problema ao inserir secretaria";
 					}
 					
 				}
 			}
-			require_once "views/form_usuario.php";
+			require_once "views/form-usuario.php";
 		}
 	}

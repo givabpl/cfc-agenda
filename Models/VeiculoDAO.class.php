@@ -7,16 +7,16 @@
 		}
 
         // função para formar o objeto Veiculo
-        private function formar_objeto($dados)
+        private function formar_objeto($dados): Veiculo
         {
             $categoriaDAO = new categoriaDAO();
-            $categoria = $categoriaDAO->buscar_categoria_por_id($dados['id_categoria']);
+            $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Veiculo
             (
                 $dados['id_veiculo'],
                 $dados['modelo'],
                 $dados['cor'],
-                $categoria,
+                $categoria
             );
         }
 
@@ -113,7 +113,7 @@
         
         public function inserir($veiculo)
         {
-            $sql = "INSERT INTO veiculos (modelo, cor, categoria_veiculo) VALUES (?,?,?)";
+            $sql = "INSERT INTO veiculos (modelo, cor, categoria) VALUES (?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
@@ -136,7 +136,7 @@
         // função para alterar veiculo
         public function alterar_veiculo($veiculo)
         {
-            $sql = "UPDATE veiculos SET modelo = ?, categoria_veiculo = ?";
+            $sql = "UPDATE veiculos SET modelo = ?, categoria = ?";
             try
             {
                 $stm = $this->db->prepare($sql);

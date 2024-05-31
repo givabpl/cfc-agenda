@@ -1,0 +1,44 @@
+    Relembrando o uso correto de funções:
+
+    Função excluir() aluno em alunoController.php
+
+    public function excluir()
+    {
+        if(isset($_GET["id"]))
+        {
+            $aluno = new Aluno($_GET["id"]);
+            $alunoDAO = new alunoDAO();
+            $ret = $alunoDAO->excluir_aluno($aluno);
+            header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
+        }
+    }
+
+    A função apresenta erro: pede 2 argumentos em:
+    $aluno = new Aluno($_GET["id"]);
+
+    Isso porque:
+
+    O problema na função excluir da forma como escrevi está na tentativa de criar um objeto Aluno apenas com o ID e 
+    depois passar esse objeto para o método excluir_aluno do alunoDAO. 
+    No entanto, o método excluir_aluno espera receber apenas um ID (um valor inteiro), não um objeto Aluno. 
+    Além disso, a classe Aluno requer mais argumentos em seu construtor do que apenas o ID, o que causaria um erro de argumento.
+
+
+    função excluir() corrigida:
+
+    public function excluir()
+    {
+        if (isset($_GET["id"])) {
+            $alunoDAO = new alunoDAO();
+            $ret = $alunoDAO->excluir_aluno($_GET["id"]);
+            header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
+        }
+    }
+
+    Explicação das Mudanças:
+    1. Remover a criação do objeto Aluno: 
+        Em vez de criar um objeto Aluno com o ID, passamos o ID diretamente para o método excluir_aluno.
+    2. Passar diretamente o ID para excluir_aluno: 
+        O método excluir_aluno espera um ID, então passamos $_GET["id"] diretamente.
+    3. Retornar uma mensagem: 
+        O método excluir_aluno retorna uma mensagem indicando o sucesso ou falha da operação, que é então passada para o redirecionamento.

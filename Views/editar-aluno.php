@@ -1,85 +1,98 @@
 <?php
-  require "src/conexao-bd.php";
-  require "src/Modelo/Aluno.Class.php";
-  require "src/Repositorio/AlunoRepositorio.php";
+    require_once "cabecalho.php";
 
-  $alunoRepositorio = new AlunoRepositorio($pdo);
-
-  if (isset($_POST['editar'])) {
-    $aluno = new Aluno($_POST['id_aluno'], $_POST['nome_aluno'], $_POST['categorias_aluno'], $_POST['observacao'], $_POST['aulas_restantes']);
-
-    $alunoRepositorio->atualizar($aluno);
-    header("Location: admin-alunos.php");
+    if ($_POST) {
+        $alunoController = new alunoController();
+        $alunoController->alterar();
     } else {
-        $aluno = $alunoRepositorio->buscar($_GET['id']);
+        $alunoDAO = new alunoDAO();
+        $aluno = $alunoDAO->buscar_um_aluno($_GET['id']);
     }
 ?>
 
-<!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="styles/nav.css">
-    <link rel="stylesheet" href="styles/body.css">
-    <link rel="stylesheet" href="styles/form.css">
-    <link rel="stylesheet" href="styles/admin.css">
-    <title>Editar Aluno</title>
-</head>
-<body>
-<main>
-    <header>
-        <nav>
-            <ul>
-                <li>
-                    <a href="admin.php">
-                        <img src="img/cfc-agenda-logo.png" alt="logo cfc agenda">
-                    </a>
-                </li>
-                <li><a href="admin-alunos.php">Alunos</a></li>
-                <li><a href="admin-instrutores.php">Instrutores</a></li>
-                <li><a href="admin-veiculos.php">Veículos</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="container-admin-banner">
-        <img src="img/logo-cfc-agenda-horizontal.png" class="logo-admin" alt="logo-cfc-agenda">
-        <h1>Editar Aluno</h1>
-        <img class= "ornaments" src="img/ornaments-cfc.png" alt="ornaments">
-    </section>
-    <section class="container-form">
-
-        <form method="post">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome_aluno" placeholder="Digite o nome do aluno" value="<?= $aluno->getNome() ?>" required>
-            <div class="container-select">
-                <div>
-                    <h4>Categorias</h4>
-                </div>
-                <div>
-                    <input type="radio" id="a" name="categorias_aluno" value="A" <?= $aluno->getCategorias() == "A"? "checked" : "" ?>>
-                    <label for="a">A</label>
-                </div>
-                <div>
-                    <input type="radio" id="b" name="categorias_aluno" value="B" <?= $aluno->getCategorias() == "B"? "checked" : "" ?>>
-                    <label for="b">B</label>
+<div class="content">
+    <div class="container">
+        <form class="form-control" action="#" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?php echo $aluno->getIdAluno(); ?>">
+            <br><br>
+            <div class="mb-3">
+                <label for="aulas_restantes" class="form-label">Aulas Restantes</label>
+                <input type="number" class="form-control" name="aulas_restantes" id="aulas_restantes" value="<?php echo $aluno->getAulasRestantes(); ?>">
+                <div style="color:red">
+                    <?php echo $msg[1] != "" ? $msg[1] : ''; ?>
                 </div>
             </div>
-            <label for="obnservacao">Observação</label>
-            <input type="text" id="observacao" name="observacao" placeholder="Digite uma observação" value="<?= $aluno->getObservacao() ?>"><br>
-
-            <label for="aulas_restantes">Aulas Restantes</label>
-            <input type="number" value="20" name="aulas_restantes">
-
-            <input type="hidden" name="id_aluno" value="<?= $aluno->getId()?>">
-            <input type="submit" name="editar" class="botao-cadastrar"  value="Editar aluno"/>
-        
+            <br><br>
+            <div class="mb-3">
+                <label for="nome_aluno" class="form-label">Nome do aluno</label>
+                <input type="text" class="form-control" id="nome_aluno" name="nome_aluno" value="<?php echo $aluno->getNomeAluno(); ?>">
+                <div style="color:red">
+                    <?php echo $msg[0] != "" ? $msg[0] : ''; ?>
+                </div>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <label for="categoria" class="form-label">Categoria do Aluno</label>
+                <select name="categoria" id="categoria">
+                    <option value="0">Escolha uma categoria</option>
+                    <?php
+                    $categoriaDAO = new categoriaDAO();
+                    $retorno = $categoriaDAO->buscar_categorias();
+                    foreach ($retorno as $dado) {
+                        if ($aluno->getCategoriaAluno() == $dado->idcategoria) {
+                            echo "<option value='{$dado->idcategoria}' selected>{$dado->descritivo}</option>";
+                        } else {
+                            echo "<option value='{$dado->idcategoria}'>{$dado->descritivo}</option>";
+                        }
+                    }
+                    ?>
+                </select>
+                <div style="color:red"><?php echo $msg[4] != "" ? $msg[4] : ''; ?></div>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <label for="celular_aluno" class="form-label">Celular do aluno</label>
+                <input type="text" class="form-control" id="celular_aluno" name="celular_aluno" value="<?php echo $aluno->getCelularAluno(); ?>">
+                <div style="color:red">
+                    <?php echo $msg[0] != "" ? $msg[0] : ''; ?>
+                </div>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <label for="obs_aluno" class="form-label">Observação</label>
+                <textarea class="form-control" id="obs_aluno" name="obs_aluno"><?php echo $aluno->getObsAluno(); ?></textarea>
+                <div style="color:red">
+                    <?php echo $msg[0] != "" ? $msg[0] : ''; ?>
+                </div>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <label for="imagem" class="form-label">Imagem</label>
+                <input type="file" class="form-control" id="imagem" name="imagem" onchange="mostrar(this)" accept="image/png, image/jpeg">
+                <div style="color:red"><?php echo $msg[5] != "" ? $msg[5] : ''; ?></div>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <?php if ($aluno->getImagem()): ?>
+                    <img src="<?php echo $aluno->getImagem(); ?>" id="img" alt="Imagem do Aluno" style="width: 100px; height: auto;">
+                <?php else: ?>
+                    <img src="" id="img" alt="Pré-visualização da imagem">
+                <?php endif; ?>
+            </div>
+            <br><br>
+            <input class="btn btn-primary" type="submit" value="Alterar">
         </form>
+    </div>
+</div>
 
-    </section>
-</main>
-</body>
-</html>
+<script>
+function mostrar(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('img').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>

@@ -25,20 +25,23 @@
 					$msg[1] = "Preencha a cor";
 					$erro = true;
 				}
-                if(empty($_POST["categoria_veiculo"]))
+                if(empty($_POST["categoria"]))
 				{
 					$msg[2] = "Selecione pelo menos uma categoria";
 					$erro = true;
 				}
                 if(!$erro)
 				{
-					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria_veiculo:$_POST["categoria_veiculo"]);
+					$categoriaDAO = new categoriaDAO();
+					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+
+					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria:$categoria);
 					
 					$veiculoDAO = new veiculoDAO();
-					$veiculoDAO->inserir($veiculo);
+					$ret = $veiculoDAO->inserir($veiculo);
 					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 				}
-                require_once "Views/form_veiculo.php";
+                require_once "Views/form-veiculo.php";
             }
         }
 
@@ -57,16 +60,15 @@
 			}//if isset
 			$veiculoDAO = new veiculoDAO();
 			$retorno = $veiculoDAO->buscar_veiculos();
-			require_once "views/listar_veiculos.php";
+			require_once "views/listar-veiculos.php";
 		}
 
         public function excluir()
 		{
 			if(isset($_GET["id"]))
 			{
-				$veiculo = new Veiculo($_GET["id"]);
 				$veiculoDAO = new veiculoDAO();
-				$ret = $veiculoDAO->excluir_veiculo($veiculo);
+				$ret = $veiculoDAO->excluir_veiculo($_GET["id"]);
 				header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 			}
 		}
@@ -76,9 +78,8 @@
         {
             if(isset($_GET["id"]))
 			{
-				$veiculo = new Veiculo($_GET["id"]);
 				$veiculoDAO = new veiculoDAO();
-				$retorno = $veiculoDAO->buscar_um_veiculo($veiculo);
+				$retorno = $veiculoDAO->buscar_um_veiculo($_GET["id"]);
 			}
 			
 			$msg = array("","","");
@@ -95,20 +96,26 @@
 					$msg[1] = "Preencha a cor";
 					$erro = true;
 				}
-                if(empty($_POST["categoria_veiculo"]))
+                if(empty($_POST["categoria"]))
 				{
 					$msg[2] = "Selecione pelo menos uma categoria";
 					$erro = true;
 				}
                 if(!$erro)
 				{
-					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria_veiculo:$_POST["categoria_veiculo"]);
+					$categoriaDAO = new categoriaDAO();
+					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+
+					$veiculo = new Veiculo(
+						modelo:$_POST["modelo"], 
+						cor:$_POST["cor"], 
+						categoria:$categoria);
 					
 					$veiculoDAO = new veiculoDAO();
-					$veiculoDAO->inserir($veiculo);
+					$ret = $veiculoDAO->inserir($veiculo);
 					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 				}
-                require_once "Views/edit_veiculo.php";
+                require_once "Views/edit-veiculo.php";
             }
 			
         }
@@ -118,6 +125,6 @@
 			//buscar dados para o pdf
 			$veiculoDAO = new veiculoDAO();
 			$retorno = $veiculoDAO->buscar_veiculos();
-			require_once "views/veiculo_pdf.php";
+			require_once "views/veiculo-pdf.php";
 		}
     }

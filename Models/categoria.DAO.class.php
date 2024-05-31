@@ -37,12 +37,12 @@
         }
 
         // Função para buscar uma categoria por ID
-        public function buscar_categoria_por_id($id): ?Categoria
+        public function buscar_uma_categoria($id_categoria): ?Categoria
         {
             $sql = "SELECT * FROM categorias WHERE id = ?";
             try {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id);
+                $stm->bindValue(1, $id_categoria);
                 $stm->execute();
                 $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
