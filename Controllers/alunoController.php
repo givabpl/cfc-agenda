@@ -6,6 +6,8 @@
     require_once "Models/Conexao.class.php";
 	require_once "Models/Aluno.class.php";
 	require_once "Models/alunoDAO.class.php";
+	require_once "Models/Categoria.class.php";
+	require_once "Models/categoriaDAO.class.php";
 
     class alunoController {     
 
@@ -16,19 +18,19 @@
 			if($_POST)
 			{
 				$erro = false;
+				if(empty($_POST["categoria"]))
+				{
+					$msg[0] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
 				if(empty($_POST["aulas_restantes"]))
 				{
-					$msg[0] = "Preencha as aulas restantes";
+					$msg[1] = "Preencha as aulas restantes";
 					$erro = true;
 				}
 				if(empty($_POST["nome_aluno"]))
 				{
-					$msg[1] = "Preencha o nome";
-					$erro = true;
-				}
-				if(empty($_POST["categoria"]))
-				{
-					$msg[2] = "Selecione pelo menos uma categoria";
+					$msg[2] = "Preencha o nome";
 					$erro = true;
 				}
 				if(empty($_POST["celular_aluno"]))
@@ -70,20 +72,15 @@
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
 					$aluno = new Aluno(
-						aulas_restantes: $_POST["aulas_restantes"], 
-						nome_aluno: $_POST["nome_aluno"], 
-						categoria: $categoria, 
-						celular_aluno: $_POST["celular_aluno"], 
-						obs_aluno: $_POST["obs_aluno"], 
-						imagem: $_POST["imagem"]
+						categoria: $categoria, aulas_restantes: $_POST["aulas_restantes"], nome_aluno: $_POST["nome_aluno"], celular_aluno: $_POST["celular_aluno"], obs_aluno: $_POST["obs_aluno"], imagem: $_FILES["imagem"]['name']
 					);
 					
 					$alunoDAO = new alunoDAO();
 					$ret = $alunoDAO->inserir($aluno);
 					header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
 				}
-				require_once "Views/form-aluno.php";
 			}
+			require_once "Views/form-aluno.php";
 		}
 
 
@@ -100,8 +97,9 @@
 			{
 				header("location:index.php");
 			}//if isset
+			$categoriaDAO = new categoriaDAO();
 			$alunoDAO = new alunoDAO();
-			$retorno = $alunoDAO->buscar_alunos();
+			$alunos = $alunoDAO->buscar_alunos();
 			require_once "views/listar-alunos.php";
 		}
 
@@ -128,19 +126,19 @@
 			if($_POST)
 			{
 				$erro = false;
+				if(empty($_POST["categoria_aluno"]))
+				{
+					$msg[0] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
 				if(empty($_POST["aulas_restantes"]))
 				{
-					$msg[0] = "Preencha as aulas restantes";
+					$msg[1] = "Preencha as aulas restantes";
 					$erro = true;
 				}
 				if(empty($_POST["nome_aluno"]))
 				{
-					$msg[1] = "Preencha o nome";
-					$erro = true;
-				}
-				if(empty($_POST["categoria_aluno"]))
-				{
-					$msg[2] = "Selecione pelo menos uma categoria";
+					$msg[2] = "Preencha o nome";
 					$erro = true;
 				}
 				if(empty($_POST["celular_aluno"]))
@@ -181,13 +179,7 @@
 					$categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-					$aluno = new Aluno(
-						aulas_restantes:$_POST["aulas_restantes"], 
-						nome_aluno:$_POST["nome_aluno"], 
-						categoria:$categoria, 
-						celular_aluno:$_POST["celular_aluno"], 
-						obs_aluno:$_POST["obs_aluno"], 
-						imagem:$_POST["imagem"]);
+					$aluno = new Aluno(categoria:$categoria, aulas_restantes:$_POST["aulas_restantes"], nome_aluno:$_POST["nome_aluno"], celular_aluno:$_POST["celular_aluno"], obs_aluno:$_POST["obs_aluno"], imagem:$_POST["imagem"]);
 
 					$alunoDAO = new alunoDAO();
 					$ret = $alunoDAO->alterar_aluno($aluno);

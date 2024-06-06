@@ -4,10 +4,10 @@
        private $duracao = 60; // Duração padrão da aula em minutos (1 hora)
    
        public function __construct(
-            private int $id_agendamento = 0, 
             private Aluno $aluno, 
             private Instrutor $instrutor, 
             private Veiculo $veiculo, 
+            private int $id_agendamento = 0, 
             private string $data_ag, // data do agendamento
             private string $horario
         ){}

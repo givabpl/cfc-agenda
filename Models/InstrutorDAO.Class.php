@@ -13,15 +13,15 @@
             $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Instrutor
             (
+                $dados['id_categoria'],
                 $dados['id_instrutor'],
                 $dados['nome_instrutor'],
-                $categoria,
                 $dados['observacao']
             );
         }
 
         //função para buscar todos os instrutores
-        public function buscar_instrutores()
+        /*public function buscar_instrutores()
         {
             $sql = "SELECT * FROM instrutores";
             try {
@@ -40,6 +40,15 @@
                 echo "Problema ao buscar todos os instrutores";
                 return [];
             }
+        }*/
+
+        public function buscar_instrutores()
+        {
+            $sql = "SELECT i.*, c.descritivo as categoria FROM instrutores as i, categorias as c WHERE i.id_categoria = c.id_categoria";
+            $stm = $this->db->prepare($sql);
+			$stm->execute();
+			$this->db = null;
+			return $stm->fetchAll(PDO::FETCH_OBJ);
         }
 
         // função para buscar instrutores da categoria A
@@ -145,12 +154,12 @@
         
         public function inserir($instrutor)
         {
-            $sql = "INSERT INTO instrutores (nome_instrutor, categoria_instrutor, celular_instrutor, obs_instrutor) VALUES (?,?,?,?)";
+            $sql = "INSERT INTO instrutores (id_categoria, nome_instrutor,  celular_instrutor, obs_instrutor) VALUES (?,?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $instrutor->getNomeInstrutor());
-                $stm->bindValue(2, $instrutor->getCategoriaInstrutor());
+                $stm->bindValue(1, $instrutor->getCategoriaInstrutor()->getId());
+                $stm->bindValue(2, $instrutor->getNomeInstrutor());
                 $stm->bindValue(3, $instrutor->getCelularInstrutor());
                 $stm->bindValue(4, $instrutor->getObsInstrutor());
                 $stm->execute();
@@ -168,12 +177,12 @@
         // função para alterar instrutor
         public function alterar_instrutor($instrutor)
         {
-            $sql = "UPDATE instrutores SET nome_instrutor = ?, categoria = ?, celular_instrutor = ?,obs_instrutor = ? WHERE id_instrutor = ?";
+            $sql = "UPDATE instrutores SET id_categoria = ?, nome_instrutor = ?,  celular_instrutor = ?,obs_instrutor = ? WHERE id_instrutor = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $instrutor->getNomeInstrutor());
-                $stm->bindValue(2, $instrutor->getCategoriaInstrutor());
+                $stm->bindValue(1, $instrutor->getCategoriaInstrutor()->getId());
+                $stm->bindValue(2, $instrutor->getNomeInstrutor());
                 $stm->bindValue(3, $instrutor->getCelularInstrutor());
                 $stm->bindValue(4, $instrutor->getObsInstrutor());
                 $stm->bindValue(5, $instrutor->getIdInstrutor());

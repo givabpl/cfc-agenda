@@ -14,32 +14,21 @@
             );
         }
 
-            // Função para buscar todas as categorias
-        public function buscar_categorias(): array
-        {
-            $sql = "SELECT * FROM categorias";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-                $categorias = [];
-                foreach ($resultados as $row) {
-                    $categorias[] = $this->formar_objeto($row);
-                }
-                $this->db = null;
-                return $categorias;
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar todas as categorias";
-                return [];
-            }
-        }
+        // Função para buscar todas as categorias
+        public function buscar_categorias()
+		{
+			$sql = "SELECT * FROM categorias";
+			$stm = $this->db->prepare($sql);
+			$stm->execute();
+			$this->db = null;
+			return $stm->fetchAll(PDO::FETCH_OBJ);
+		}//fim buscar_categorias
+
 
         // Função para buscar uma categoria por ID
         public function buscar_uma_categoria($id_categoria): ?Categoria
         {
-            $sql = "SELECT * FROM categorias WHERE id = ?";
+            $sql = "SELECT * FROM categorias WHERE id_categoria = ?";
             try {
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $id_categoria);

@@ -2,9 +2,9 @@
     class Instrutor 
     {
         public function __construct(
+            private $categoria = null, 
             private int $id_instrutor = 0,
             private string $nome_instrutor = "",
-            private Categoria $categoria, 
             private string $celular_instrutor = "",
             private string $obs_instrutor = ""
         ){}

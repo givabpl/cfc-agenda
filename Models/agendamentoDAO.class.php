@@ -22,10 +22,10 @@
             // $categoriaDAO = new categoriaDAO();
             // $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Agendamento(
-                $dados['id_ag'],
                 $aluno,
                 $instrutor,
                 $veiculo,
+                $dados['id_ag'],
                 $dados['data_ag'],
                 $dados['horario']
             );

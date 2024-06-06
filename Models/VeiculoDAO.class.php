@@ -13,15 +13,15 @@
             $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Veiculo
             (
+                $categoria,
                 $dados['id_veiculo'],
                 $dados['modelo'],
                 $dados['cor'],
-                $categoria
             );
         }
 
         //função para buscar todos os veiculos
-        public function buscar_veiculos()
+        /*public function buscar_veiculos()
         {
             $sql = "SELECT * FROM veiculos";
             try {
@@ -40,7 +40,16 @@
                 echo "Problema ao buscar todos os veiculos";
                 return [];
             }
-        }
+        }*/
+
+        public function buscar_veiculos()
+		{
+			$sql = "SELECT v.*, c.descritivo as categoria FROM veiculos as v, categorias as c WHERE v.id_categoria = c.id_categoria";
+			$stm = $this->db->prepare($sql);
+			$stm->execute();
+			$this->db = null;
+			return $stm->fetchAll(PDO::FETCH_OBJ);
+		}
 
         // função para buscar veiculos da categoria A
         public function buscar_veiculos_categoria_A()
@@ -113,13 +122,14 @@
         
         public function inserir($veiculo)
         {
-            $sql = "INSERT INTO veiculos (modelo, cor, categoria) VALUES (?,?,?)";
+            $sql = "INSERT INTO veiculos (id_categoria, modelo, cor) VALUES (?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $veiculo->getModelo());
-                $stm->bindValue(2, $veiculo->getCor());
-                $stm->bindValue(3, $veiculo->getCategoriaVeiculo());
+                $stm->bindValue(1, $veiculo->getCategoriaVeiculo()->getId());
+                $stm->bindValue(2, $veiculo->getModelo());
+                $stm->bindValue(3, $veiculo->getCor());
+                
 
                 $stm->execute();
                 $this->db = null;
@@ -136,13 +146,13 @@
         // função para alterar veiculo
         public function alterar_veiculo($veiculo)
         {
-            $sql = "UPDATE veiculos SET modelo = ?, categoria = ?";
+            $sql = "UPDATE veiculos SET id_categoria = ? modelo = ?";
             try
             {
                 $stm = $this->db->prepare($sql);
+                $stm->bindValue(1, $veiculo->getCategoriaVeiculo()->getId());
                 $stm->bindValue(1, $veiculo->getModelo());
                 $stm->bindValue(2, $veiculo->getCor());
-                $stm->bindValue(3, $veiculo->getCategoriaVeiculo());
                 $stm->execute();
                 $this->db = null;
                 return "Veiculo alterado com sucesso";

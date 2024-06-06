@@ -2,7 +2,7 @@
     class Aluno 
     {
         public function __construct(
-            private Categoria $categoria, 
+            private $categoria = null, 
             private int $id_aluno = 0, 
             private int $aulas_restantes = 0,
             private string $nome_aluno = "", 
@@ -38,11 +38,6 @@
         public function getImagem()
         { 
             return $this->imagem; 
-        }
-
-        public function setImagem(string $imagem) 
-        { 
-            $this->imagem = $imagem; 
         }
 
     }

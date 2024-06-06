@@ -6,9 +6,11 @@
     require_once "Models/Conexao.class.php";
     require_once "Models/Veiculo.class.php";
     require_once "Models/veiculoDAO.class.php";
+	require_once "Models/Categoria.class.php";
+	require_once "Models/categoriaDAO.class.php";
     class VeiculoController {
        
-        // Salvar veiculo
+        // Inserir veiculo
         public function inserir()
         {
 			$msg = array("","","");
@@ -41,20 +43,22 @@
 					$ret = $veiculoDAO->inserir($veiculo);
 					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 				}
-                require_once "Views/form-veiculo.php";
             }
+			require_once "Views/form-veiculo.php";
         }
 
         // Buscar veiculo
-        public function buscar_veiculos()
+        public function buscar()
 		{
 			$veiculoDAO = new veiculoDAO();
 			$retorno = $veiculoDAO->buscar_veiculos();
 			return $retorno;
 		}
+
+		// listar veiculo
         public function listar()
 		{
-			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Administrador")
+			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
 			{
 				header("location:index.php");
 			}//if isset
@@ -63,6 +67,7 @@
 			require_once "views/listar-veiculos.php";
 		}
 
+		// excluir veiculo
         public function excluir()
 		{
 			if(isset($_GET["id"]))
@@ -106,10 +111,7 @@
 					$categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-					$veiculo = new Veiculo(
-						modelo:$_POST["modelo"], 
-						cor:$_POST["cor"], 
-						categoria:$categoria);
+					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria:$categoria);
 					
 					$veiculoDAO = new veiculoDAO();
 					$ret = $veiculoDAO->inserir($veiculo);
@@ -120,6 +122,7 @@
 			
         }
 
+		// gerar pdf de veiculos
         public function gerar_pdf()
 		{
 			//buscar dados para o pdf

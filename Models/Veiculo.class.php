@@ -1,10 +1,10 @@
 <?php
 class Veiculo {
     public function __construct(
+        private $categoria = null, 
         private int $id_veiculo = 0, 
         private string $modelo = "", 
         private string $cor = "",
-        private Categoria $categoria,
     ){}
 
     public function getIdVeiculo()

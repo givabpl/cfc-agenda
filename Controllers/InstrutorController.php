@@ -6,6 +6,8 @@
     require_once "Models/Conexao.class.php";
     require_once "Models/Instrutor.class.php";
     require_once "Models/instrutorDAO.class.php";
+    require_once "Models/Categoria.class.php";
+	require_once "Models/categoriaDAO.class.php";
 
     class InstrutorController {
 
@@ -16,15 +18,14 @@
             if($_POST)
             {
                 $erro = false;
-    
-                if(empty($_POST["nome_instrutor"]))
-                {
-                    $msg[0] = "Preencha o nome";
-                    $erro = true;
-                }
                 if(empty($_POST["categoria"]))
                 {
-                    $msg[1] = "Selecione pelo menos uma categoria";
+                    $msg[0] = "Selecione pelo menos uma categoria";
+                    $erro = true;
+                }
+                if(empty($_POST["nome_instrutor"]))
+                {
+                    $msg[1] = "Preencha o nome";
                     $erro = true;
                 }
                 if(empty($_POST["celular_instrutor"]))
@@ -42,37 +43,34 @@
                     $categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-                    $instrutor = new Instrutor(
-                        nome_instrutor:$_POST["nome_instrutor"], 
-                        categoria:$categoria,
-                        celular_instrutor:$_POST["celular_instrutor"], 
-                        obs_instrutor:$_POST["obs_instrutor"]);
+                    $instrutor = new Instrutor(categoria:$categoria,nome_instrutor:$_POST["nome_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
                     
                     $instrutorDAO = new instrutorDAO();
                     $ret = $instrutorDAO->inserir($instrutor);
                     header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
                 }
-                require_once "Views/form_instrutor.php";
             }
+            require_once "Views/form-instrutor.php";
         }
 
         // Buscar instrutor
-        public function buscar_instrutores()
+        public function buscar()
         {
             $instrutorDAO = new instrutorDAO();
             $retorno = $instrutorDAO->buscar_instrutores();
             return $retorno;
         }
 
-        public function listar_instrutores()
+        public function listar()
         {
-            if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Administrador")
+            if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
             {
                 header("location:index.php");
             }//if isset
+            $categoriaDAO = new categoriaDAO();
             $instrutorDAO = new instrutorDAO();
-            $retorno = $instrutorDAO->buscar_instrutores();
-            require_once "views/listar_instrutores.php";
+            $instrutores = $instrutorDAO->buscar_instrutores();
+            require_once "views/listar-instrutores.php";
         }
 
         public function excluir()
@@ -98,14 +96,14 @@
             if($_POST)
             {
                 $erro = false;
-                if(empty($_POST["nome_instrutor"]))
-                {
-                    $msg[0] = "Preencha o nome";
-                    $erro = true;
-                }
                 if(empty($_POST["categoria"]))
                 {
-                    $msg[1] = "Selecione pelo menos uma categoria";
+                    $msg[0] = "Selecione pelo menos uma categoria";
+                    $erro = true;
+                }
+                if(empty($_POST["nome_instrutor"]))
+                {
+                    $msg[1] = "Preencha o nome";
                     $erro = true;
                 }
                 if(empty($_POST["celular_instrutor"]))
@@ -123,11 +121,7 @@
                     $categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-                    $instrutor = new Instrutor(
-                        nome_instrutor:$_POST["nome_instrutor"], 
-                        categoria:$categoria, 
-                        celular_instrutor:$_POST["celular_instrutor"], 
-                        obs_instrutor:$_POST["obs_instrutor"]);
+                    $instrutor = new Instrutor(categoria:$categoria,nome_instrutor:$_POST["nome_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
                     
                     $instrutorDAO = new instrutorDAO();
                     $ret = $instrutorDAO->inserir($instrutor);
@@ -142,6 +136,6 @@
             //buscar dados para o pdf
             $instrutorDAO = new instrutorDAO();
             $retorno = $instrutorDAO->buscar_instrutores();
-            require_once "views/instrutor_pdf.php";
+            require_once "views/instrutor-pdf.php";
         }
     }
