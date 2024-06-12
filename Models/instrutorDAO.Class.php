@@ -42,9 +42,23 @@
             }
         }*/
 
-        public function buscar_instrutores()
+
+        // método para buscar instrutores com suas informações e respectivas categorias
+        // chamado em listar() - instrutorController
+        public function buscar_instrutores_categorias()
         {
             $sql = "SELECT i.*, c.descritivo as categoria FROM instrutores as i, categorias as c WHERE i.id_categoria = c.id_categoria";
+            $stm = $this->db->prepare($sql);
+			$stm->execute();
+			$this->db = null;
+			return $stm->fetchAll(PDO::FETCH_OBJ);
+        }
+
+        // método para buscar todos instrutores 
+        // chamado em 
+        public function buscar_instrutores()
+        {
+            $sql = "SELECT * FROM instrutores";
             $stm = $this->db->prepare($sql);
 			$stm->execute();
 			$this->db = null;

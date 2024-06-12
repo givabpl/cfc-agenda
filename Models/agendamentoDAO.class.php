@@ -19,12 +19,10 @@
             $veiculoDAO = new veiculoDAO();
             $veiculo = $veiculoDAO->buscar_um_veiculo($dados['id_veiculo']);
 
-            // $categoriaDAO = new categoriaDAO();
-            // $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Agendamento(
-                $aluno,
-                $instrutor,
-                $veiculo,
+                $dados['id_aluno'],
+                $dados['id_instrutor'],
+                $dados['id_veiculo'],
                 $dados['id_ag'],
                 $dados['data_ag'],
                 $dados['horario']

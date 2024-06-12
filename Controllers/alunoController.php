@@ -91,15 +91,16 @@
 			$retorno = $alunoDAO->buscar_alunos();
 			return $retorno;
 		}
+
         public function listar()
 		{
 			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
 			{
 				header("location:index.php");
-			}//if isset
+			}
 			$categoriaDAO = new categoriaDAO();
 			$alunoDAO = new alunoDAO();
-			$alunos = $alunoDAO->buscar_alunos();
+			$alunos = $alunoDAO->buscar_alunos_categorias();
 			require_once "views/listar-alunos.php";
 		}
 

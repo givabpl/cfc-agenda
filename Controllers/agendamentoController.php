@@ -14,6 +14,7 @@
     require_once "models/Instrutor.class.php";
     require_once "models/instrutorDAO.class.php";
     require_once "Models/Usuario.class.php";
+    require_once "Models/usuarioDAO.class.php";
 
     class agendamentoController
     {
@@ -53,12 +54,7 @@
                     $instrutor = $instrutorDAO->buscar_um_instrutor($_POST["instrutor"]);
                     $veiculo = $veiculoDAO->buscar_um_veiculo($_POST["veiculo"]);
     
-                    $agendamento = new Agendamento(
-                        aluno: $aluno,
-                        instrutor: $instrutor,
-                        veiculo: $veiculo,
-                        data_ag: $_POST["data_ag"],
-                        horario: $_POST["horario"]
+                    $agendamento = new Agendamento( aluno: $aluno, instrutor: $instrutor, veiculo: $veiculo, data_ag: $_POST["data_ag"], horario: $_POST["horario"]
                     );
     
                     $agendamentoDAO = new agendamentoDAO();
@@ -80,10 +76,12 @@
         // Listar agendamentos
         public function listar()
         {
-            if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Administrador") {
+            if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria") {
                 header("location:index.php");
             }
-    
+            $alunoDAO = new alunoDAO();
+            $instrutorDAO = new instrutorDAO();
+            $veiculoDAO = new veiculoDAO();
             $agendamentoDAO = new agendamentoDAO();
             $retorno = $agendamentoDAO->buscar_agendamentos();
             require_once "Views/listar-agendamentos.php";
