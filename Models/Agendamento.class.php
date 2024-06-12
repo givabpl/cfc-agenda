@@ -8,8 +8,8 @@
             private Instrutor $instrutor, 
             private Veiculo $veiculo, 
             private int $id_agendamento = 0, 
-            private string $data_ag, // data do agendamento
-            private string $horario
+            private string $data_ag = "", // data do agendamento
+            private string $horario = ""
         ){}
    
        // Métodos Getters
