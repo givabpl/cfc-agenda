@@ -42,9 +42,18 @@
             }
         }*/
 
-        public function buscar_veiculos()
+        public function buscar_veiculos_categorias()
 		{
 			$sql = "SELECT v.*, c.descritivo as categoria FROM veiculos as v, categorias as c WHERE v.id_categoria = c.id_categoria";
+			$stm = $this->db->prepare($sql);
+			$stm->execute();
+			$this->db = null;
+			return $stm->fetchAll(PDO::FETCH_OBJ);
+		}
+
+        public function buscar_veiculos()
+		{
+			$sql = "SELECT * FROM veiculos";
 			$stm = $this->db->prepare($sql);
 			$stm->execute();
 			$this->db = null;

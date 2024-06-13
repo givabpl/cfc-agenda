@@ -69,7 +69,7 @@
             }//if isset
             $categoriaDAO = new categoriaDAO();
             $instrutorDAO = new instrutorDAO();
-            $instrutores = $instrutorDAO->buscar_instrutores();
+            $instrutores = $instrutorDAO->buscar_instrutores_categorias();
             require_once "views/listar-instrutores.php";
         }
 

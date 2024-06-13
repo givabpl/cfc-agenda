@@ -44,7 +44,7 @@
                 return [];
             }
         }*/
-        public function buscar_alunos_categorias()
+        public function buscar_alunos()
 		{
 			$sql = "SELECT a.*, c.descritivo as categoria FROM alunos as a, categorias as c WHERE a.id_categoria = c.id_categoria";
 			$stm = $this->db->prepare($sql);
@@ -52,15 +52,6 @@
 			$this->db = null;
 			return $stm->fetchAll(PDO::FETCH_OBJ);
 		}
-
-        public function buscar_alunos()
-        {
-            $sql = "SELECT * FROM alunos";
-			$stm = $this->db->prepare($sql);
-			$stm->execute();
-			$this->db = null;
-			return $stm->fetchAll(PDO::FETCH_OBJ);
-        }
 
         // Função para buscar alunos da categoria A
         public function buscar_alunos_categoria_A()
@@ -129,7 +120,7 @@
         }
 
         // Função para buscar um aluno
-        public function buscar_um_aluno($id_aluno)
+        public function buscar_um_aluno($id_aluno): ?Aluno
         {
             $sql = "SELECT * FROM alunos WHERE id_aluno = ?";
             try {
@@ -138,7 +129,11 @@
                 $stm->execute();
                 $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                return $resultado;
+                if ($resultado) {
+                    return $this->formar_objeto($resultado);
+                } else {
+                    return null;
+                }
             } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();

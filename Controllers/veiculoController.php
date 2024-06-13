@@ -63,7 +63,7 @@
 				header("location:index.php");
 			}//if isset
 			$veiculoDAO = new veiculoDAO();
-			$retorno = $veiculoDAO->buscar_veiculos();
+			$retorno = $veiculoDAO->buscar_veiculos_categorias();
 			require_once "views/listar-veiculos.php";
 		}
 
