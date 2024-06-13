@@ -13,7 +13,7 @@
             $categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Veiculo
             (
-                $categoria,
+                $dados['id_categoria'],
                 $dados['id_veiculo'],
                 $dados['modelo'],
                 $dados['cor'],

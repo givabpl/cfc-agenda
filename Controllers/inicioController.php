@@ -5,7 +5,7 @@
 		{
 			require_once "controllers/alunoController.php";
 			$alunoController = new alunoController();
-			$retorno = $alunoController->buscar_alunos();
+			$retorno = $alunoController->buscar();
 			require_once "views/menu.php";
 		}
 	}

@@ -40,7 +40,7 @@
 				  </li>
 
                   <li class='nav-item bg-green'>
-				  <a class='nav-link' href='index.php?controle=agendaController&metodo=inserir'>Novo Agendamento</a>
+				  <a class='nav-link' href='index.php?controle=agendamentoController&metodo=inserir'>Novo Agendamento</a>
 				  </li>
 
 				  <li class='nav-item'>

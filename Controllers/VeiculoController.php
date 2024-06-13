@@ -37,7 +37,7 @@
 					$categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria:$categoria);
+					$veiculo = new Veiculo(categoria:$categoria, modelo:$_POST["modelo"], cor:$_POST["cor"]);
 					
 					$veiculoDAO = new veiculoDAO();
 					$ret = $veiculoDAO->inserir($veiculo);
@@ -48,7 +48,7 @@
         }
 
         // Buscar veiculo
-        public function buscar()
+        public function buscar_veiculos()
 		{
 			$veiculoDAO = new veiculoDAO();
 			$retorno = $veiculoDAO->buscar_veiculos();

@@ -16,11 +16,12 @@
                 <th>Categoria</th>
 				<th>Modelo</th>
 				<th>Cor</th>
+				<th>Ações</th>
 			</tr>
 			<?php
 				
 				
-				foreach($veiculos as $dado)
+				foreach($retorno as $dado)
 				{
 					echo "<tr>
 							<td>{$dado->categoria}</td>

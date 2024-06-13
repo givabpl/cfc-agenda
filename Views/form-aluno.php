@@ -14,10 +14,14 @@
                     // buscar as categorias no BD
                     $categoriaDAO = new categoriaDAO();
                     $retorno = $categoriaDAO->buscar_categorias();
-                    foreach ($retorno as $dado) {
-                        if (isset($_POST["categoria"]) && $_POST["categoria"] == $dado->id_categoria) {
+                    
+                    foreach ($retorno as $dado) 
+                    {
+                        if (isset($_POST["categoria"]) && $_POST["categoria"] == $dado->id_categoria) 
+                        {
                             echo "<option value='{$dado->id_categoria}' selected>{$dado->descritivo}</option>";
-                        } else {
+                        } else 
+                        {
                             echo "<option value='{$dado->id_categoria}'>{$dado->descritivo}</option>";
                         }
                     } // fim foreach

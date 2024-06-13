@@ -1,9 +1,7 @@
 <?php
-    date_default_timezone_set("America/Sao_Paulo");
     if(!isset($_SESSION))
-    {
         session_start();
-    }
+    
     require_once "models/Conexao.class.php";
     require_once "models/Agendamento.class.php";
     require_once "models/agendamentoDAO.class.php";
@@ -44,7 +42,8 @@
                     $erro = true;
                 }
     
-                if (!$erro) {
+                if (!$erro) 
+                {
                     $alunoDAO = new alunoDAO();
                     $instrutorDAO = new instrutorDAO();
                     $veiculoDAO = new veiculoDAO();
@@ -66,7 +65,7 @@
                     header("location:index.php?controle=agendamentoController&metodo=listar&msg=$ret");
                 }
             }
-            require_once "Views/form-agendamento.php";
+            require_once "Views/form-agenda.php";
         }
     
         // Buscar agendamentos

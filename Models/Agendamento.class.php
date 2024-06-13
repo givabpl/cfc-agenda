@@ -4,15 +4,15 @@
        private $duracao = 60; // Duração padrão da aula em minutos (1 hora)
    
        public function __construct(
-            private Aluno $aluno, 
-            private Instrutor $instrutor, 
-            private Veiculo $veiculo, 
+            private $aluno = null, 
+            private $instrutor = null, 
+            private $veiculo = null, 
             private int $id_agendamento = 0, 
-            private string $data_ag, // data do agendamento
-            private string $horario
+            private string $data_ag = "", // data do agendamento
+            private string $horario = ""
         ){}
    
-       // Métodos Getters
+        // Métodos Getters
         public function getIdAgendamento()
         {
             return $this->id_agendamento;

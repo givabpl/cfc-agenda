@@ -53,21 +53,27 @@
         // Método para buscar todos os agendamentos
         public function buscar_agendamentos()
         {
-            $sql = "SELECT * FROM agendamentos";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-                $agendamentos = [];
-                foreach ($resultados as $row) {
-                    $agendamentos[] = $this->formar_objeto($row);
-                }
-                return $agendamentos;
-            } catch (PDOException $e) {
-                throw new Exception("Erro ao buscar agendamentos: " . $e->getMessage(), $e->getCode());
-            }
+            $sql = "
+                SELECT 
+                    ag.*, 
+                    a.nome_aluno, 
+                    i.nome_instrutor, 
+                    v.modelo 
+                FROM 
+                    agendamentos as ag
+                JOIN 
+                    alunos as a ON ag.id_aluno = a.id_aluno
+                JOIN 
+                    instrutores as i ON ag.id_instrutor = i.id_instrutor
+                JOIN 
+                    veiculos as v ON ag.id_veiculo = v.id_veiculo
+            ";
+            $stm = $this->db->prepare($sql);
+            $stm->execute();
+            $this->db = null;
+            return $stm->fetchAll(PDO::FETCH_OBJ);
         }
+
 
         // Método para buscar um agendamento por ID
         public function buscar_agendamento_por_id($id_agendamento)

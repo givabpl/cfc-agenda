@@ -71,8 +71,7 @@
 					$categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
 
-					$aluno = new Aluno(
-						categoria: $categoria, aulas_restantes: $_POST["aulas_restantes"], nome_aluno: $_POST["nome_aluno"], celular_aluno: $_POST["celular_aluno"], obs_aluno: $_POST["obs_aluno"], imagem: $_FILES["imagem"]['name']
+					$aluno = new Aluno(categoria: $categoria, aulas_restantes: $_POST["aulas_restantes"], nome_aluno: $_POST["nome_aluno"], celular_aluno: $_POST["celular_aluno"], obs_aluno: $_POST["obs_aluno"], imagem: $_FILES["imagem"]['name']
 					);
 					
 					$alunoDAO = new alunoDAO();
@@ -85,7 +84,7 @@
 
 
         // Buscar aluno
-        public function buscar_alunos()
+        public function buscar()
 		{
 			$alunoDAO = new alunoDAO();
 			$retorno = $alunoDAO->buscar_alunos();
@@ -99,7 +98,7 @@
 			}//if isset
 			$categoriaDAO = new categoriaDAO();
 			$alunoDAO = new alunoDAO();
-			$alunos = $alunoDAO->buscar_alunos();
+			$alunos = $alunoDAO->buscar_alunos_categorias();
 			require_once "views/listar-alunos.php";
 		}
 

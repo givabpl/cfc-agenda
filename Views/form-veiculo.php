@@ -4,7 +4,7 @@
 
 <div class="content">
     <div class="container">
-        <form class="form-control" action="#" method="POST" enctype="multipart/form-data">
+        <form class="form-control" action="#" method="POST">
             <br><br>
             
             <div class="mb-3">
@@ -15,6 +15,7 @@
 						//buscar as categorias no BD
 						$categoriaDAO = new categoriaDAO();
 						$retorno = $categoriaDAO->buscar_categorias();
+
 						foreach($retorno as $dado)
 						{
 							if(isset($_POST["categoria"]) && $_POST["categoria"] == $dado->id_categoria)
