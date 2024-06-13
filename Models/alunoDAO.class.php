@@ -10,7 +10,7 @@
         // formar objeto Aluno a partir de array de dados
         private function formar_objeto($dados): Aluno
         {
-           // $categoriaDAO = new categoriaDAO();
+            // $categoriaDAO = new categoriaDAO();
             //$categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Aluno(
                 $dados['id_categoria'],
@@ -44,13 +44,30 @@
                 return [];
             }
         }*/
-        public function buscar_alunos()
+        public function buscar_alunos_categorias()
 		{
 			$sql = "SELECT a.*, c.descritivo as categoria FROM alunos as a, categorias as c WHERE a.id_categoria = c.id_categoria";
 			$stm = $this->db->prepare($sql);
 			$stm->execute();
 			$this->db = null;
 			return $stm->fetchAll(PDO::FETCH_OBJ);
+		}
+
+        public function buscar_alunos()
+		{
+			$sql = "SELECT * FROM alunos";
+			try
+			{
+				$stm = $this->db->prepare($sql);
+				$stm->execute();
+				$this->db = null;
+				return $stm->fetchAll(PDO::FETCH_OBJ);
+			}
+			catch(PDOException $e)
+			{
+				$this->db = null;
+				return "Problema ao buscar os alunos";
+			}
 		}
 
         // Função para buscar alunos da categoria A

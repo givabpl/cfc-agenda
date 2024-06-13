@@ -18,17 +18,17 @@
             return $this->id_agendamento;
         }
 
-        public function getAluno(): Aluno
+        public function getAluno()
         {
             return $this->aluno;
         }
 
-        public function getInstrutor(): Instrutor
+        public function getInstrutor()
         {
             return $this->instrutor;
         }
 
-        public function getVeiculo(): Veiculo
+        public function getVeiculo()
         {
             return $this->veiculo;
         }
@@ -43,7 +43,7 @@
             return $this->horario;
         }
 
-        public function getDuracao()
+        /*public function getDuracao()
         {
             return $this->duracao;
         }
@@ -60,6 +60,6 @@
    
            // Retorna a data e o horário de término da aula
            return $dataHoraTermino->format('Y-m-d H:i:s');
-       }
+       }*/
    }
    

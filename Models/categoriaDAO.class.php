@@ -18,11 +18,19 @@
         public function buscar_categorias()
 		{
 			$sql = "SELECT * FROM categorias";
-			$stm = $this->db->prepare($sql);
-			$stm->execute();
-			$this->db = null;
-			return $stm->fetchAll(PDO::FETCH_OBJ);
-		}//fim buscar_categorias
+			try
+			{
+				$stm = $this->db->prepare($sql);
+				$stm->execute();
+				$this->db = null;
+				return $stm->fetchAll(PDO::FETCH_OBJ);
+			}
+			catch(PDOException $e)
+			{
+				$this->db = null;
+				return "Problema ao buscar as categorias";
+			}
+		}
 
 
         // Função para buscar uma categoria por ID

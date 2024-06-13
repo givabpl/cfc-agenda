@@ -83,7 +83,7 @@
 		}
 
 
-        // Buscar aluno
+        // BUSCAR ALUNOS
         public function buscar()
 		{
 			$alunoDAO = new alunoDAO();
@@ -91,6 +91,7 @@
 			return $retorno;
 		}
 
+		// LISTAR ALUNOS
         public function listar()
 		{
 			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
@@ -103,6 +104,7 @@
 			require_once "views/listar-alunos.php";
 		}
 
+		// EXCLUIR ALUNO
         public function excluir()
 		{
 			if(isset($_GET["id"]))
@@ -113,7 +115,7 @@
 			}
 		}
 
-        // Atualizar aluno
+        // ALTERAR ALUNO
        public function alterar()
 		{
 			if(isset($_GET["id"]))

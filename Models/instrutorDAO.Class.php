@@ -59,10 +59,18 @@
         public function buscar_instrutores()
         {
             $sql = "SELECT * FROM instrutores";
-            $stm = $this->db->prepare($sql);
-			$stm->execute();
-			$this->db = null;
-			return $stm->fetchAll(PDO::FETCH_OBJ);
+            try
+			{
+				$stm = $this->db->prepare($sql);
+				$stm->execute();
+				$this->db = null;
+				return $stm->fetchAll(PDO::FETCH_OBJ);
+			}
+			catch(PDOException $e)
+			{
+				$this->db = null;
+				return "Problema ao buscar os instrutores";
+			}
         }
 
         // função para buscar instrutores da categoria A
@@ -168,7 +176,7 @@
         
         public function inserir($instrutor)
         {
-            $sql = "INSERT INTO instrutores (id_categoria, nome_instrutor,  celular_instrutor, obs_instrutor) VALUES (?,?,?,?)";
+            $sql = "INSERT INTO instrutores (id_categoria, nome_instrutor, celular_instrutor, obs_instrutor) VALUES (?,?,?,?)";
             try
             {
                 $stm = $this->db->prepare($sql);
