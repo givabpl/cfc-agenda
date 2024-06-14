@@ -130,7 +130,7 @@
             }
         }
     
-        // Método para excluir um agendamento
+        // MÉTODO: EXCLUIR AGENDAMENTO
         public function excluir_agendamento($id_agendamento)
         {
             $sql = "DELETE FROM agendamentos WHERE id_agendamento = ?";
@@ -138,7 +138,9 @@
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $id_agendamento);
                 return $stm->execute();
-            } catch (PDOException $e) {
+            } 
+            catch (PDOException $e) 
+            {
                 throw new Exception("Erro ao excluir agendamento: " . $e->getMessage(), $e->getCode());
             }
         }

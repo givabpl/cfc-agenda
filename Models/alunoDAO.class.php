@@ -7,11 +7,9 @@
             parent:: __construct();
         }
 
-        // formar objeto Aluno a partir de array de dados
+        // FORMAR OBJ A PARTIR DE UM ARRAY DE $DADOS
         private function formar_objeto($dados): Aluno
         {
-            // $categoriaDAO = new categoriaDAO();
-            //$categoria = $categoriaDAO->buscar_uma_categoria($dados['id_categoria']);
             return new Aluno(
                 $dados['id_categoria'],
                 $dados['id_aluno'],
@@ -211,8 +209,8 @@
         }
 
 
-        // função para deletar aluno
-        public function excluir_aluno($id_aluno) // obj - apenas $id
+        // MÉTODO: EXCLUIR ALUNO
+        public function excluir_aluno($id_aluno) // obj - apenas $id?
         {
             $sql = "DELETE FROM alunos WHERE id_aluno = ?";
             try
