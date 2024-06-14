@@ -111,6 +111,29 @@
                 throw new Exception("Erro ao buscar agendamentos por aluno: " . $e->getMessage(), $e->getCode());
             }
         }
+
+        // Método para buscar agendamentos por ID do instrutor
+        public function buscar_agendamentos_por_instrutor($id_instrutor)
+        {
+            $sql = "SELECT * FROM agendamentos WHERE id_instrutor = ?";
+            try 
+            {
+                $stm = $this->db->prepare($sql);
+                $stm->bindValue(1, $id_instrutor);
+                $stm->execute();
+                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
+                return $resultados;
+            } catch (PDOException $e) {
+                throw new Exception("Erro ao buscar agendamentos do instrutor: " . $e->getMessage(), $e->getCode());
+            }
+        }
+
+        // LISTAR AGENDAMENTOS POR INSTRUTOR
+        public function listar_agendamentos_por_instrutor()
+        {
+            $sql = "SELECT ag.*, a.nome_aluno as aluno FROM agendamentos as ag, alunos as a WHERE ag.id_aluno = a.id_aluno";
+        }
+
     
         // Método para atualizar um agendamento
         public function atualizar_agendamento(Agendamento $agendamento)
@@ -134,7 +157,8 @@
         public function excluir_agendamento($id_agendamento)
         {
             $sql = "DELETE FROM agendamentos WHERE id_agendamento = ?";
-            try {
+            try 
+            {
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $id_agendamento);
                 return $stm->execute();
