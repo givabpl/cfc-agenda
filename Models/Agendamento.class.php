@@ -8,8 +8,7 @@
             private $instrutor = null, 
             private $veiculo = null, 
             private int $id_agendamento = 0, 
-            private string $data_ag = "", // data do agendamento
-            private string $horario = ""
+            private string $datahora = null
         ){}
    
         // Métodos Getters
@@ -33,15 +32,11 @@
             return $this->veiculo;
         }
 
-        public function getDataAg()
+        public function getDataHora()
         {
-            return $this->data_ag;
+            return $this->datahora;
         }
 
-        public function getHorario()
-        {
-            return $this->horario;
-        }
 
         /*public function getDuracao()
         {

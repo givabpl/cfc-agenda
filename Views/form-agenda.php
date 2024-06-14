@@ -30,14 +30,14 @@
                 <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
             </div>
 
-            <br><br>
+            <br>
 
             <div class="mb-3">
                 <label for="instrutor" class="form-label">Instrutor</label>
                 <select name="instrutor" id="instrutor">
                     <option value="0">Escolha um instrutor</option>
                     <?php
-                    // buscar as alunos no BD
+                    // buscar instutores no BD
                     $instrutorDAO = new instrutorDAO();
                     $retorno = $instrutorDAO->buscar_instrutores();
                     
@@ -50,13 +50,13 @@
                         {
                             echo "<option value='{$dado->id_instrutor}'>{$dado->nome_instrutor}</option>";
                         }
-                    } // fim foreach
+                    } 
                     ?>
                 </select>
                 <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
             </div>
 
-            <br><br>
+            <br>
 
             <div class="mb-3">
                 <label for="veiculo" class="form-label">Veículo</label>
@@ -82,7 +82,21 @@
                 <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
             </div>
 
-            <br><br>
+            <br>
+
+            <div class="mb-3">
+                <label for="datahora_inicio" class="form-label">Data e Hora de Início</label>
+                <input type="datetime-local" id="datahora_inicio" name="datahora_inicio" class="form-control" required>
+                <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
+            </div>
+
+            <br>
+
+            <div class="mb-3">
+                <label for="datahora_fim" class="form-label">Data e Hora de Fim</label>
+                <input type="datetime-local" id="datahora_fim" name="datahora_fim" class="form-control" required>
+                <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
+            </div>
 
             <input class="btn btn-primary" type="submit" value="Agendar">
         </form>

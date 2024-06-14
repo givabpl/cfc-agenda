@@ -61,6 +61,18 @@
             return $retorno;
         }
 
+        public function listar_ag()
+        {
+            if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
+            {
+                header("location:index.php");
+            }//if isset
+            $categoriaDAO = new categoriaDAO();
+            $instrutorDAO = new instrutorDAO();
+            $instrutores = $instrutorDAO->buscar_instrutores_categorias();
+            require_once "views/selecionar-instrutor.php";
+        }
+
         public function listar()
         {
             if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")

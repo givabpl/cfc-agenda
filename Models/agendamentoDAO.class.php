@@ -39,8 +39,7 @@
                 $stm->bindValue(1, $agendamento->getAluno()->getIdAluno());
                 $stm->bindValue(2, $agendamento->getInstrutor()->getIdInstrutor());
                 $stm->bindValue(3, $agendamento->getVeiculo()->getIdVeiculo());
-                $stm->bindValue(4, $agendamento->getDataAg());
-                $stm->bindValue(5, $agendamento->getHorario());
+                $stm->bindValue(4, $agendamento->getDataHora()->getIdDataHora());
                 return $stm->execute();
             } catch (PDOException $e) {
                 // Lançar exceção para que o chamador possa lidar com o erro
@@ -54,6 +53,8 @@
             $sql = "
                 SELECT 
                     ag.*, 
+                    d.data_ag,
+                    h.horario,
                     a.nome_aluno, 
                     i.nome_instrutor, 
                     v.modelo 
