@@ -61,7 +61,7 @@
             return $retorno;
         }
 
-        public function listar_ag()
+        public function listar_inst()
         {
             if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
             {
@@ -72,6 +72,7 @@
             $instrutores = $instrutorDAO->buscar_instrutores_categorias();
             require_once "views/selecionar-instrutor.php";
         }
+
 
         public function listar()
         {

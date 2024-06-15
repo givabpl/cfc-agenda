@@ -24,8 +24,7 @@
                 $dados['id_instrutor'],
                 $dados['id_veiculo'],
                 $dados['id_ag'],
-                $dados['data_ag'],
-                $dados['horario']
+                $dados['datahora']
             );
         }
 
@@ -33,7 +32,7 @@
         // Método para criar um novo agendamento
         public function criar_agendamento(Agendamento $agendamento)
         {
-            $sql = "INSERT INTO agendamentos (id_aluno, id_instrutor, id_veiculo, data_ag, horario) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO agendamentos (id_aluno, id_instrutor, id_veiculo, datahora) VALUES (?, ?, ?, ?)";
             try {
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $agendamento->getAluno()->getIdAluno());
@@ -139,15 +138,14 @@
         // Método para atualizar um agendamento
         public function atualizar_agendamento(Agendamento $agendamento)
         {
-            $sql = "UPDATE agendamentos SET id_aluno = ?, id_instrutor = ?, id_veiculo = ?, data_ag = ?, horario = ? WHERE id_agendamento = ?";
+            $sql = "UPDATE agendamentos SET id_aluno = ?, id_instrutor = ?, id_veiculo = ?, datahora = ? WHERE id_agendamento = ?";
             try {
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $agendamento->getAluno()->getIdAluno());
                 $stm->bindValue(2, $agendamento->getInstrutor()->getIdInstrutor());
                 $stm->bindValue(3, $agendamento->getVeiculo()->getIdVeiculo());
-                $stm->bindValue(4, $agendamento->getDataAg());
-                $stm->bindValue(5, $agendamento->getHorario());
-                $stm->bindValue(6, $agendamento->getIdAgendamento());
+                $stm->bindValue(4, $agendamento->getDataHora()->getIdDataHora());
+                $stm->bindValue(5, $agendamento->getIdAgendamento());
                 return $stm->execute();
             } catch (PDOException $e) {
                 throw new Exception("Erro ao atualizar agendamento: " . $e->getMessage(), $e->getCode());

@@ -40,7 +40,7 @@
 				  </li>
 
                   <li class='nav-item bg-green'>
-				  <a class='nav-link' href='index.php?controle=instrutorController&metodo=listar_ag'>Agendamentos</a>
+				  <a class='nav-link' href='index.php?controle=instrutorController&metodo=listar_inst'>Agendamentos</a>
 				  </li>
 
 				  <li class='nav-item'>
