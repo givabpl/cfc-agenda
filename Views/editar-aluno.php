@@ -1,13 +1,5 @@
 <?php
     require_once "cabecalho.php";
-
-    if ($_POST) {
-        $alunoController = new alunoController();
-        $alunoController->alterar();
-    } else {
-        $alunoDAO = new alunoDAO();
-        $aluno = $alunoDAO->buscar_um_aluno($_GET['id']);
-    }
 ?>
 
 <div class="content">

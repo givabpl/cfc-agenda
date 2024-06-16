@@ -11,7 +11,7 @@
 
     class alunoController {     
 
-        // Salvar aluno
+        // INSERIR ALUNO
         public function inserir()
 		{
 			$msg = array("","","","","","","");
@@ -191,7 +191,7 @@
 			}
 		}
 
-
+		// GERAR PDF
         public function gerar_pdf()
 		{
 			//buscar dados para o pdf

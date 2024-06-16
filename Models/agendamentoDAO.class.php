@@ -27,7 +27,6 @@
                 $dados['datahora']
             );
         }
-
     
         // Método para criar um novo agendamento
         public function criar_agendamento(Agendamento $agendamento)
@@ -131,7 +130,7 @@
         // LISTAR AGENDAMENTOS POR INSTRUTOR
         public function listar_agendamentos_por_instrutor()
         {
-            $sql = "SELECT ag.*, a.nome_aluno as aluno FROM agendamentos as ag, alunos as a WHERE ag.id_aluno = a.id_aluno";
+            $sql = "SELECT ag.*, i.nome_instrutor as instrutor FROM agendamentos as ag, instrutores as i WHERE ag.id_instrutor = i.id_instrutor";
         }
 
     

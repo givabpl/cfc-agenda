@@ -135,7 +135,7 @@
         }
 
         // Função para buscar um aluno
-        public function buscar_um_aluno($id_aluno): ?Aluno
+        public function buscar_um_aluno($id_aluno)
         {
             $sql = "SELECT * FROM alunos WHERE id_aluno = ?";
             try {
