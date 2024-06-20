@@ -135,21 +135,21 @@
         }
 
         // Função para buscar um aluno
-        public function buscar_um_aluno($id_aluno)
+        public function buscar_um_aluno($aluno)
         {
             $sql = "SELECT * FROM alunos WHERE id_aluno = ?";
-            try {
+            try 
+            {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_aluno);
+                $stm->bindValue(1, $aluno->getIdAluno());
                 $stm->execute();
-                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                if ($resultado) {
-                    return $this->formar_objeto($resultado);
-                } else {
-                    return null;
-                }
-            } catch (PDOException $e) {
+                return $stm->fetchAll(PDO::FETCH_OBJ);
+                
+            } 
+            catch (PDOException $e) 
+            {
+                $this->db = null;
                 echo $e->getCode();
                 echo $e->getMessage();
                 echo "Problema ao buscar um aluno";
@@ -182,7 +182,7 @@
         }
 
         
-        // função para alterar aluno
+        // MÉTODO:ALTERAR ALUNO
         public function alterar_aluno($aluno)
         {
             $sql = "UPDATE alunos SET id_categoria = ?, aulas_restantes =?, nome_aluno = ?, celular_aluno = ?, obs_aluno = ?, imagem = ? WHERE id_aluno = ?";
@@ -216,15 +216,21 @@
 			try
 			{
 				$stm = $this->db->prepare($sql);
-				$stm->bindValue(1, $aluno->getIdAluno(), PDO::PARAM_INT);
+				$stm->bindValue(1, $aluno->getIdAluno());
 				$stm->execute();
 				$this->db = null;
-				return "Aluno excluido com sucesso";
+				return "Aluno excluido com sucesso com sucesso";
 			}
 			catch(PDOException $e)
 			{
-				$this->db = null;
-				return "Problema ao excluir um aluno";
+				if($e->getCode() == "23000")
+				{
+					return "Aluno contém agendamentos. Não pode ser excluido";
+				}
+				else
+				{
+					return "Problema ao excluir aluno";
+				}
 			}
-		}
+		}//excluir
     }

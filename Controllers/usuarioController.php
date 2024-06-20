@@ -46,6 +46,7 @@
 			}
 			require_once "views/form-login.php";
 		}
+
 		public function logout()
 		{
 			session_start();
@@ -53,6 +54,7 @@
 			session_destroy();
 			header("location:index.php");
 		}
+		
 		public function inserir()
 		{
 			$msg = array("","","","");

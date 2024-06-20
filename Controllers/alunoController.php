@@ -111,9 +111,21 @@
 			{
 				$aluno = new Aluno($_GET["id"]);
 				$alunoDAO = new alunoDAO();
-				$ret = $alunoDAO->excluir_aluno($aluno);
+				$retorno = $alunoDAO->excluir_aluno($aluno);
 			}
-			header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
+			header("location:index.php?controle=alunoController&metodo=listar&msg=$retorno");
+		}
+
+		// EXCLUIR LOGICO
+		public function excluir_logico() 
+		{
+			if($_GET)
+			{
+				$aluno = new Aluno(id_aluno:$_GET["id"], situacao:$_GET["situacao"]);
+				$alunoDAO = new alunoDAO();
+				$retorno = alunoDAO->alterar_situacao($aluno);
+				header("location:index.php?controle=alunoController&metodo=listar&msg=$retorno");
+			}
 		}
 
         // ALTERAR ALUNO
