@@ -210,26 +210,21 @@
 
 
         // MÉTODO: EXCLUIR ALUNO
-        public function excluir_aluno($id_aluno) // obj - apenas $id?
-        {
-            $sql = "DELETE FROM alunos WHERE id_aluno = ?";
-            try
-            {
-                $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_aluno);
-                $stm->execute();
-                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
-                $this->db = null;
-                if ($resultado) {
-                    return $this->formar_objeto($resultado);
-                } else {
-                    return null;
-                }
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao excluir um aluno";
-                return null;
-            }
-        }
+        public function excluir_aluno($aluno)
+		{
+			$sql = "DELETE FROM alunos WHERE id_aluno = ?";
+			try
+			{
+				$stm = $this->db->prepare($sql);
+				$stm->bindValue(1, $aluno->getIdAluno(), PDO::PARAM_INT);
+				$stm->execute();
+				$this->db = null;
+				return "Aluno excluido com sucesso";
+			}
+			catch(PDOException $e)
+			{
+				$this->db = null;
+				return "Problema ao excluir um aluno";
+			}
+		}
     }

@@ -109,10 +109,11 @@
 		{
 			if(isset($_GET["id"]))
 			{
+				$aluno = new Aluno($_GET["id"]);
 				$alunoDAO = new alunoDAO();
-				$ret = $alunoDAO->excluir_aluno($_GET["id"]);
-				header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
+				$ret = $alunoDAO->excluir_aluno($aluno);
 			}
+			header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
 		}
 
         // ALTERAR ALUNO
