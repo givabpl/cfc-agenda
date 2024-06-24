@@ -39,7 +39,8 @@
         public function buscar_um_aluno($aluno)
         {
             $sql = "SELECT * FROM alunos WHERE id_aluno = ?";
-            try {
+            try 
+            {
                 $stm = $this->db->prepare($sql);
                 $stm->bindValue(1, $aluno->getIdAluno());
                 $stm->execute();
@@ -114,12 +115,18 @@
 				$stm->bindValue(1, $aluno->getIdAluno());
 				$stm->execute();
 				$this->db = null;
-				return "Aluno excluido com sucesso";
+				return "Aluno excluido com sucesso com sucesso";
 			}
 			catch(PDOException $e)
 			{
-				$this->db = null;
-				return "Problema ao excluir um aluno";
+				if($e->getCode() == "23000")
+				{
+					return "Aluno contém agendamentos. Não pode ser excluido";
+				}
+				else
+				{
+					return "Problema ao excluir aluno";
+				}
 			}
 		}
     }

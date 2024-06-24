@@ -10,24 +10,6 @@
             <br><br>
 
             <div class="mb-3">
-                <label for="aulas_restantes" class="form-label">Aulas Restantes</label>
-                <input type="number" class="form-control" name="aulas_restantes" id="aulas_restantes" value="<?php echo $aluno->getAulasRestantes(); ?>">
-                <div style="color:red">
-                    <?php echo $msg[1] != "" ? $msg[1] : ''; ?>
-                </div>
-            </div>
-            
-            <br><br>
-            
-            <div class="mb-3">
-                <label for="nome_aluno" class="form-label">Nome do aluno</label>
-                <input type="text" class="form-control" id="nome_aluno" name="nome_aluno" value="<?php echo $aluno->getNomeAluno(); ?>">
-                <div style="color:red">
-                    <?php echo $msg[0] != "" ? $msg[0] : ''; ?>
-                </div>
-            </div>
-            <br><br>
-            <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria do Aluno</label>
                 <select name="categoria" id="categoria">
                     <option value="0">Escolha uma categoria</option>
@@ -45,7 +27,29 @@
                 </select>
                 <div style="color:red"><?php echo $msg[4] != "" ? $msg[4] : ''; ?></div>
             </div>
+            
             <br><br>
+
+            <div class="mb-3">
+                <label for="aulas_restantes" class="form-label">Aulas Restantes</label>
+                <input type="number" class="form-control" name="aulas_restantes" id="aulas_restantes" value="<?php echo $aluno->getAulasRestantes(); ?>">
+                <div style="color:red">
+                    <?php echo $msg[1] != "" ? $msg[1] : ''; ?>
+                </div>
+            </div>
+            
+            <br><br>
+            
+            <div class="mb-3">
+                <label for="nome_aluno" class="form-label">Nome do aluno</label>
+                <input type="text" class="form-control" id="nome_aluno" name="nome_aluno" value="<?php echo $aluno->getNomeAluno(); ?>">
+                <div style="color:red">
+                    <?php echo $msg[0] != "" ? $msg[0] : ''; ?>
+                </div>
+            </div>
+
+            <br><br>
+            
             <div class="mb-3">
                 <label for="celular_aluno" class="form-label">Celular do aluno</label>
                 <input type="text" class="form-control" id="celular_aluno" name="celular_aluno" value="<?php echo $aluno->getCelularAluno(); ?>">

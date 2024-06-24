@@ -6,10 +6,9 @@
     require_once "Models/Conexao.class.php";
 	require_once "Models/Categoria.class.php";
 	require_once "Models/categoriaDAO.class.php";
-    class VeiculoController {
-       
-       
-        // Buscar veiculo
+
+    class categoriaController {
+        // BUSCAR 
         public function buscar()
 		{
 			$categoriaDAO = new categoriaDAO();
@@ -17,7 +16,7 @@
 			return $retorno;
 		}
 
-		// listar veiculo
+		// LISTAR
         public function listar()
 		{
 			if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")

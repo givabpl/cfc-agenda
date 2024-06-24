@@ -101,8 +101,9 @@
         {
             if(isset($_GET["id"]))
             {
-                $instrutorDAO = new instrutorDAO();
-                $instrutor = $instrutorDAO->buscar_um_instrutor($_GET["id"]);
+                $instrutor = new Instrutor($_GET["id"]);
+				$instrutorDAO = new instrutorDAO();
+				$retorno = $instrutorDAO->buscar_um_instrutor($instrutor);
             }
             
             $msg = array("","","","");

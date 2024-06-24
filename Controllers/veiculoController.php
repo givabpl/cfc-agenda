@@ -72,8 +72,9 @@
 		{
 			if(isset($_GET["id"]))
 			{
+				$veiculo = new Veiculo($_GET["id"]);
 				$veiculoDAO = new veiculoDAO();
-				$ret = $veiculoDAO->excluir_veiculo($_GET["id"]);
+				$ret = $veiculoDAO->excluir_veiculo($veiculo);
 				header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 			}
 		}
@@ -81,14 +82,15 @@
         // Atualizar veiculo
         public function alterar()
 		{
-			$msg = array("","","");
-
-			if ($_GET && isset($_GET["id"]))
+			
+			if (isset($_GET["id"]))
 			{
+				$veiculo = new Veiculo($_GET["id"]);
 				$veiculoDAO = new veiculoDAO();
-				$veiculo = $veiculoDAO->buscar_um_veiculo($_GET["id"]);
+				$retorno = $veiculoDAO->buscar_um_veiculo($veiculo);
 			}
 
+			$msg = array("","","");
 			if ($_POST)
 			{
 				$erro = false;
@@ -111,9 +113,9 @@
 
 				if (!$erro)
 				{
-					$categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
-					$veiculo = new Veiculo(categoria: $categoria, id_veiculo: $_POST["id"], modelo: $_POST["modelo"], cor: $_POST["cor"]);
+					$categoria = new Categoria($_POST["categoria"]);
+
+					$veiculo = new Veiculo(categoria:$categoria, id_veiculo:$_POST["id"], modelo:$_POST["modelo"], cor:$_POST["cor"]);
 					
 					$veiculoDAO = new veiculoDAO();
 					$ret = $veiculoDAO->alterar_veiculo($veiculo);

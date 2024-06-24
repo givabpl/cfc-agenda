@@ -120,8 +120,9 @@
 		{
 			if(isset($_GET["id"]))
 			{
+				$aluno = new Aluno($_GET["id"]);
 				$alunoDAO = new alunoDAO();
-				$aluno = $alunoDAO->buscar_um_aluno($_GET["id"]);
+				$retorno = $alunoDAO->buscar_um_aluno($aluno);
 			}
 			
 			$msg = array("","","","","","","");
@@ -178,8 +179,7 @@
 
 				if(!$erro)
 				{
-					$categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+					$categoria = new Categoria($_POST["categoria"]);
 
 					$aluno = new Aluno(categoria:$categoria, aulas_restantes:$_POST["aulas_restantes"], nome_aluno:$_POST["nome_aluno"], celular_aluno:$_POST["celular_aluno"], obs_aluno:$_POST["obs_aluno"], imagem:$_POST["imagem"]);
 

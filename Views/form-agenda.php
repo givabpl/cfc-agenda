@@ -59,6 +59,46 @@
             <br>
 
             <div class="mb-3">
+                <label for="data" class="form-label">Data</label>
+                <input type="date" id="data" name="data" class="form-control" required>
+                <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
+            </div>
+
+            <br>
+
+            <div class="mb-3">
+                <label for="hora_inicio" class="form-label">Hora de Início</label>
+                <select name="hora_inicio" id="hora_inicio" class="form-control" required>
+                    <option value="">Escolha a hora de início</option>
+                    <?php
+                    foreach ($horariosDisponiveis as $horario) {
+                        echo "<option value='{$horario->getHora()}'>{$horario->getHora()}</option>";
+                    }
+                    ?>
+                </select>
+                <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
+            </div>
+
+            <br><br>
+
+            <!-- Hora de Fim -->
+            <div class="mb-3">
+                <label for="hora_fim" class="form-label">Hora de Fim</label>
+                <select name="hora_fim" id="hora_fim" class="form-control" required>
+                    <option value="">Escolha a hora de fim</option>
+                    <?php
+                    foreach ($horariosDisponiveis as $horario) {
+                        echo "<option value='{$horario->getHora()}'>{$horario->getHora()}</option>";
+                    }
+                    ?>
+                </select>
+                <div style="color:red"><?php echo $msg[0] != "" ? $msg[0] : ''; ?></div>
+            </div>
+
+            <br>
+
+
+            <div class="mb-3">
                 <label for="veiculo" class="form-label">Veículo</label>
                 <select name="veiculo" id="veiculo">
                     <option value="0">Escolha um veículo</option>

@@ -16,7 +16,7 @@
 
     class agendamentoController
     {
-        // Inserir agendamento
+        // INSERIR 
         public function inserir()
         {
             $msg = array("", "", "", "", "");
@@ -53,7 +53,7 @@
                     $instrutor = $instrutorDAO->buscar_um_instrutor($_POST["instrutor"]);
                     $veiculo = $veiculoDAO->buscar_um_veiculo($_POST["veiculo"]);
     
-                    $agendamento = new Agendamento( aluno: $aluno, instrutor: $instrutor, veiculo: $veiculo, data_ag: $_POST["data_ag"], horario: $_POST["horario"]
+                    $agendamento = new Agendamento( aluno:$aluno, instrutor:$instrutor, veiculo:$veiculo, data_ag: $_POST["data_ag"], horario: $_POST["horario"]
                     );
     
                     $agendamentoDAO = new agendamentoDAO();
@@ -64,7 +64,7 @@
             require_once "Views/form-agenda.php";
         }
     
-        // Buscar agendamentos
+        // BUSCAR
         public function buscar_agendamentos()
         {
             $agendamentoDAO = new agendamentoDAO();
@@ -72,7 +72,7 @@
             return $retorno;
         }
     
-        // Listar agendamentos
+        // LISTAR
         public function listar()
         {
             if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria") {
@@ -86,7 +86,7 @@
             require_once "Views/listar-agendamentos.php";
         }
 
-        // Excluir agendamento
+        // EXCLUIR
         public function excluir()
         {
             if (isset($_GET["id"])) 
@@ -97,7 +97,7 @@
             }
         }
 
-        // Alterar agendamento
+        // ALTERAR
         public function alterar()
         {
             if (isset($_GET["id"])) {
