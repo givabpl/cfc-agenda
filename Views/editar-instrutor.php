@@ -1,13 +1,5 @@
 <?php
     require_once "cabecalho.php";
-
-    if ($_POST) {
-        $instrutorController = new instrutorController();
-        $instrutorController->alterar();
-    } else {
-        $instrutorDAO = new instrutorDAO();
-        $instrutor = $instrutorDAO->buscar_um_instrutor($_GET['id']);
-    }
 ?>
 
 <div class="content">
@@ -28,15 +20,15 @@
                 <select name="categoria" id="categoria">
                     <option value="0">Escolha uma categoria</option>
                     <?php
-                    $categoriaDAO = new categoriaDAO();
-                    $retorno = $categoriaDAO->buscar_categorias();
-                    foreach ($retorno as $dado) {
-                        if ($aluno->getCategoriaAluno() == $dado->idcategoria) {
-                            echo "<option value='{$dado->idcategoria}' selected>{$dado->descritivo}</option>";
-                        } else {
-                            echo "<option value='{$dado->idcategoria}'>{$dado->descritivo}</option>";
+                        $categoriaDAO = new categoriaDAO();
+                        $retorno = $categoriaDAO->buscar_categorias();
+                        foreach ($retorno as $dado) {
+                            if ($aluno->getCategoriaAluno() == $dado->id_categoria) {
+                                echo "<option value='{$dado->id_categoria}' selected>{$dado->descritivo}</option>";
+                            } else {
+                                echo "<option value='{$dado->id_categoria}'>{$dado->descritivo}</option>";
+                            }
                         }
-                    }
                     ?>
                 </select>
                 <div style="color:red"><?php echo $msg[4] != "" ? $msg[4] : ''; ?></div>

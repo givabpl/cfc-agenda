@@ -74,15 +74,14 @@
 			{
 				$veiculo = new Veiculo($_GET["id"]);
 				$veiculoDAO = new veiculoDAO();
-				$ret = $veiculoDAO->excluir_veiculo($veiculo);
-				header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
+				$retorno = $veiculoDAO->excluir_veiculo($veiculo);
 			}
+			header("location:index.php?controle=veiculoController&metodo=listar&msg=$retorno");
 		}
 
         // Atualizar veiculo
         public function alterar()
 		{
-			
 			if (isset($_GET["id"]))
 			{
 				$veiculo = new Veiculo($_GET["id"]);

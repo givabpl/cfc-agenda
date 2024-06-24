@@ -5,7 +5,7 @@
 <div class="content">
     <div class="container">
         <form class="form-control" action="#" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?php echo $aluno->getIdAluno(); ?>">
+            <input type="hidden" name="id_aluno" value="<?php echo $aluno->getIdAluno(); ?>">
 
             <br><br>
 
@@ -14,15 +14,15 @@
                 <select name="categoria" id="categoria">
                     <option value="0">Escolha uma categoria</option>
                     <?php
-                    $categoriaDAO = new categoriaDAO();
-                    $retorno = $categoriaDAO->buscar_categorias();
-                    foreach ($retorno as $dado) {
-                        if ($aluno->getCategoriaAluno() == $dado->idcategoria) {
-                            echo "<option value='{$dado->idcategoria}' selected>{$dado->descritivo}</option>";
-                        } else {
-                            echo "<option value='{$dado->idcategoria}'>{$dado->descritivo}</option>";
+                        $categoriaDAO = new categoriaDAO();
+                        $retorno = $categoriaDAO->buscar_categorias();
+                        foreach ($retorno as $dado) {
+                            if ($aluno->getCategoriaAluno() == $dado->id_categoria) {
+                                echo "<option value='{$dado->id_categoria}' selected>{$dado->descritivo}</option>";
+                            } else {
+                                echo "<option value='{$dado->id_categoria}'>{$dado->descritivo}</option>";
+                            }
                         }
-                    }
                     ?>
                 </select>
                 <div style="color:red"><?php echo $msg[4] != "" ? $msg[4] : ''; ?></div>

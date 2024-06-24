@@ -187,8 +187,9 @@
 					$ret = $alunoDAO->alterar_aluno($aluno);
 					header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
 				}
-				require_once "Views/editar-aluno.php";
 			}
+			// obs: buscar dados DAO
+			require_once "Views/editar-aluno.php";
 		}
 
 		// GERAR PDF

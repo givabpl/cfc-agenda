@@ -40,8 +40,7 @@
                 }
                 if(!$erro)
                 {
-                    $categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+                    $categoria = new Categoria($_POST["categoria"]);
 
                     $instrutor = new Instrutor(categoria:$categoria,nome_instrutor:$_POST["nome_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
                     
@@ -66,7 +65,7 @@
             if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
             {
                 header("location:index.php");
-            }//if isset
+            }
             $categoriaDAO = new categoriaDAO();
             $instrutorDAO = new instrutorDAO();
             $instrutores = $instrutorDAO->buscar_instrutores_categorias();
@@ -79,7 +78,7 @@
             if(!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "Secretaria")
             {
                 header("location:index.php");
-            }//if isset
+            }
             $categoriaDAO = new categoriaDAO();
             $instrutorDAO = new instrutorDAO();
             $instrutores = $instrutorDAO->buscar_instrutores_categorias();
@@ -90,10 +89,11 @@
         {
             if(isset($_GET["id"]))
             {
+                $instrutor = new Instrutor($_GET["id"]);
                 $instrutorDAO = new instrutorDAO();
-                $ret = $instrutorDAO->excluir($_GET["id"]);
-                header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
+                $retorno = $instrutorDAO->excluir($instrutor);
             }
+            header("location:index.php?controle=instrutorController&metodo=listar&msg=$retorno");
         }
 
         // Atualizar instrutor
@@ -132,17 +132,16 @@
                 }
                 if(!$erro)
                 {
-                    $categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+                    $categoria = new Categoria($_POST["categoria"]);
 
                     $instrutor = new Instrutor(categoria:$categoria,nome_instrutor:$_POST["nome_instrutor"], celular_instrutor:$_POST["celular_instrutor"], obs_instrutor:$_POST["obs_instrutor"]);
                     
                     $instrutorDAO = new instrutorDAO();
-                    $ret = $instrutorDAO->inserir($instrutor);
+                    $ret = $instrutorDAO->alterar_instrutor($instrutor);
                     header("location:index.php?controle=instrutorController&metodo=listar&msg=$ret");
                 }
-                require_once "Views/edit-instrutor.php";
             }
+            require_once "Views/editar-instrutor.php";
         }
 
         public function gerar_pdf()
