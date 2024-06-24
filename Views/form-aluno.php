@@ -89,9 +89,7 @@
             var reader = new FileReader();
             reader.onload = function(e){
                 $('#img')
-                .attr('src', e.target.result)
-                .width(170)
-                .height(170);
+                .attr('src', e.target.result);
             };
             reader.readAsDataURL(img.files[0]);
         }

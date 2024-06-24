@@ -2,8 +2,8 @@
     class Aluno 
     {
         public function __construct(
-            private $categoria = null, 
             private int $id_aluno = 0, 
+            private $categoria = null, 
             private int $aulas_restantes = 0,
             private string $nome_aluno = "", 
             private string $celular_aluno = "",

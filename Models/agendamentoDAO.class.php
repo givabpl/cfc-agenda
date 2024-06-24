@@ -1,34 +1,13 @@
 <?php
-
+    // METODO: BANCO DE DADOS
     class AgendamentoDAO extends Conexao
     {
         public function __construct()
         {
             parent::__construct();
         }
-
-        // Método privado para formar um objeto Agendamento a partir de um array de dados
-        private function formar_objeto($dados): Agendamento
-        {
-            $alunoDAO = new alunoDAO();
-            $aluno = $alunoDAO->buscar_um_aluno($dados['id_aluno']);
-
-            $instrutorDAO = new instrutorDAO();
-            $instrutor = $instrutorDAO->buscar_um_instrutor($dados['id_instrutor']);
-
-            $veiculoDAO = new veiculoDAO();
-            $veiculo = $veiculoDAO->buscar_um_veiculo($dados['id_veiculo']);
-
-            return new Agendamento(
-                $dados['id_aluno'],
-                $dados['id_instrutor'],
-                $dados['id_veiculo'],
-                $dados['id_ag'],
-                $dados['datahora']
-            );
-        }
     
-        // Método para criar um novo agendamento
+        // CRIAR AGENDAMENTO
         public function criar_agendamento(Agendamento $agendamento)
         {
             $sql = "INSERT INTO agendamentos (id_aluno, id_instrutor, id_veiculo, datahora) VALUES (?, ?, ?, ?)";
@@ -45,7 +24,7 @@
             }
         }
     
-        // Método para buscar todos os agendamentos
+        // BUSCAR TODOS AGENDAMENTOS
         public function buscar_agendamentos()
         {
             $sql = "
@@ -72,7 +51,7 @@
         }
 
 
-        // Método para buscar um agendamento por ID
+        // BUSCAR UM AGENDAMENTO
         public function buscar_agendamento_por_id($id_agendamento)
         {
             $sql = "SELECT * FROM agendamentos WHERE id_agendamento = ?";
@@ -91,7 +70,7 @@
         }
 
 
-        // Método para buscar agendamentos por ID do aluno
+        // BUSCAR AGENDAMENTOS POR ALUNO
         public function buscar_agendamentos_por_aluno($id_aluno)
         {
             $sql = "SELECT * FROM agendamentos WHERE id_aluno = ?";
@@ -111,7 +90,7 @@
             }
         }
 
-        // Método para buscar agendamentos por ID do instrutor
+        // BUSCAR AGENDAMENTOS POR INSTRUTOR
         public function buscar_agendamentos_por_instrutor($id_instrutor)
         {
             $sql = "SELECT * FROM agendamentos WHERE id_instrutor = ?";
@@ -134,7 +113,7 @@
         }
 
     
-        // Método para atualizar um agendamento
+        // ATUALIZAR AGENDAMENTO
         public function atualizar_agendamento(Agendamento $agendamento)
         {
             $sql = "UPDATE agendamentos SET id_aluno = ?, id_instrutor = ?, id_veiculo = ?, datahora = ? WHERE id_agendamento = ?";
@@ -151,14 +130,14 @@
             }
         }
     
-        // MÉTODO: EXCLUIR AGENDAMENTO
-        public function excluir_agendamento($id_agendamento)
+        // EXCLUIR AGENDAMENTO
+        public function excluir_agendamento($agendamento)
         {
             $sql = "DELETE FROM agendamentos WHERE id_agendamento = ?";
             try 
             {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_agendamento);
+                $stm->bindValue(1, $agendamento->getIdAgendamento());
                 return $stm->execute();
             } 
             catch (PDOException $e) 

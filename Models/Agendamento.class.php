@@ -7,8 +7,8 @@
             private $aluno = null, 
             private $instrutor = null, 
             private $veiculo = null, 
-            private int $id_agendamento = 0, 
-            private string $datahora = null
+            private string $datahora = null,
+            private int $id_agendamento = 0
         ){}
    
         // Métodos Getters

@@ -1,5 +1,5 @@
 {
     "require": {
-        "cfc-agenda/cfc-agenda": "1.0.*"
+        "mpdf/mpdf": "^6.1"
     }
 }

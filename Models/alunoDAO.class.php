@@ -1,5 +1,5 @@
 <?php
-
+    // METODOS - BANCO DE DADOS
     class alunoDAO extends Conexao 
     {
         public function __construct()
@@ -7,41 +7,7 @@
             parent:: __construct();
         }
 
-        // FORMAR OBJ A PARTIR DE UM ARRAY DE $DADOS
-        private function formar_objeto($dados): Aluno
-        {
-            return new Aluno(
-                $dados['id_categoria'],
-                $dados['id_aluno'],
-                $dados['aulas_restantes'],
-                $dados['nome_aluno'],
-                $dados['celular_aluno'],
-                $dados['obs_aluno'],
-                $dados['imagem']
-            );
-        }
-
-        // Função para buscar todos os alunos
-        /*public function buscar_alunos(): array
-        {
-            $sql = "SELECT a.*, c.descritivo FROM alunos a JOIN categorias c ON a.id_categoria = c.id_categoria";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-                $alunos = [];
-                foreach ($resultados as $row) {
-                    $alunos[] = $this->formar_objeto($row);
-                }
-                $this->db = null;
-                return $alunos;
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar todos os alunos";
-                return [];
-            }
-        }*/
+        // BUSCAR ALUNOS & RESPECTIVAS CATEGORIAS
         public function buscar_alunos_categorias()
 		{
 			$sql = "SELECT a.*, c.descritivo as categoria FROM alunos as a, categorias as c WHERE a.id_categoria = c.id_categoria";
@@ -51,6 +17,7 @@
 			return $stm->fetchAll(PDO::FETCH_OBJ);
 		}
 
+        // BUSCAR ALUNOS
         public function buscar_alunos()
 		{
 			$sql = "SELECT * FROM alunos";
@@ -68,87 +35,16 @@
 			}
 		}
 
-        // Função para buscar alunos da categoria A
-        public function buscar_alunos_categoria_A()
-        {
-            $sql = "SELECT * FROM alunos WHERE categoria = 'A' ORDER BY nome_aluno";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-                $alunos = [];
-                foreach ($resultados as $row) {
-                    $alunos[] = $this->formar_objeto($row);
-                }
-                $this->db = null;
-                return $alunos;
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar os alunos de categoria A";
-                return [];
-            }
-        }
-
-        // Função para buscar alunos da categoria B
-        public function buscar_alunos_categoria_B()
-        {
-            $sql = "SELECT * FROM alunos WHERE categoria = 'B' ORDER BY nome_aluno";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-                $alunos = [];
-                foreach ($resultados as $row) {
-                    $alunos[] = $this->formar_objeto($row);
-                }
-                $this->db = null;
-                return $alunos;
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar os alunos de categoria B";
-                return [];
-            }
-        }
-
-        // Função para buscar alunos das categorias AB
-        public function buscar_alunos_categoria_AB()
-        {
-            $sql = "SELECT * FROM alunos WHERE categoria = 'AB' ORDER BY nome_aluno";
-            try {
-                $stm = $this->db->prepare($sql);
-                $stm->execute();
-                $resultados = $stm->fetchAll(PDO::FETCH_ASSOC);
-                $alunos = [];
-                foreach ($resultados as $row) {
-                    $alunos[] = $this->formar_objeto($row);
-                }
-                $this->db = null;
-                return $alunos;
-            } catch (PDOException $e) {
-                echo $e->getCode();
-                echo $e->getMessage();
-                echo "Problema ao buscar os alunos de categoria AB";
-                return [];
-            }
-        }
-
-        // Função para buscar um aluno
-        public function buscar_um_aluno($id_aluno)
+        // BUSCAR UM ALUNO
+        public function buscar_um_aluno($aluno)
         {
             $sql = "SELECT * FROM alunos WHERE id_aluno = ?";
             try {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_aluno);
+                $stm->bindValue(1, $aluno->getIdAluno());
                 $stm->execute();
-                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                if ($resultado) {
-                    return $this->formar_objeto($resultado);
-                } else {
-                    return null;
-                }
+			    return $stm->fetchAll(PDO::FETCH_OBJ);
             } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
@@ -156,7 +52,8 @@
                 return null;
             }
         }
-        // função para inserir/cadastrar aluno
+
+        // INSERIR ALUNO
         public function inserir($aluno)
         {
             $sql = "INSERT INTO alunos (id_categoria, aulas_restantes, nome_aluno,  celular_aluno, obs_aluno, imagem) VALUES (?,?,?,?,?,?)";
@@ -180,9 +77,8 @@
                 echo "Problema ao cadastrar aluno";
             }
         }
-
         
-        // função para alterar aluno
+        // ALTERAR ALUNO
         public function alterar_aluno($aluno)
         {
             $sql = "UPDATE alunos SET id_categoria = ?, aulas_restantes =?, nome_aluno = ?, celular_aluno = ?, obs_aluno = ?, imagem = ? WHERE id_aluno = ?";
@@ -208,15 +104,14 @@
             }
         }
 
-
-        // MÉTODO: EXCLUIR ALUNO
+        // EXCLUIR ALUNO
         public function excluir_aluno($aluno)
 		{
-			$sql = "DELETE FROM alunos WHERE id_aluno = ?";
+            $sql = "DELETE FROM alunos WHERE id_aluno = ?";
 			try
 			{
 				$stm = $this->db->prepare($sql);
-				$stm->bindValue(1, $aluno->getIdAluno(), PDO::PARAM_INT);
+				$stm->bindValue(1, $aluno->getIdAluno());
 				$stm->execute();
 				$this->db = null;
 				return "Aluno excluido com sucesso";

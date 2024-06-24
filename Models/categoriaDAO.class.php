@@ -1,4 +1,5 @@
 <?php
+    // METODOS - BANCO DE DADOS
     class categoriaDAO extends Conexao
     {
         public function __construct()
@@ -6,15 +7,7 @@
             parent:: __construct();
         }
 
-        private function formar_objeto($dados): Categoria
-        {
-            return new Categoria(
-                $dados['id_categoria'],
-                $dados['descritivo']
-            );
-        }
-
-        // Função para buscar todas as categorias
+        // BUSCAR CATEGORIAS
         public function buscar_categorias()
 		{
 			$sql = "SELECT * FROM categorias";
@@ -32,26 +25,20 @@
 			}
 		}
 
-
-        // Função para buscar uma categoria por ID
-        public function buscar_uma_categoria($id_categoria): ?Categoria
+        // BUSCAR UMA CATEGORIA
+        public function buscar_uma_categoria($categoria)
         {
             $sql = "SELECT * FROM categorias WHERE id_categoria = ?";
             try {
                 $stm = $this->db->prepare($sql);
-                $stm->bindValue(1, $id_categoria);
+                $stm->bindValue(1, $categoria->getId());
                 $stm->execute();
-                $resultado = $stm->fetch(PDO::FETCH_ASSOC);
                 $this->db = null;
-                if ($resultado) {
-                    return $this->formar_objeto($resultado);
-                } else {
-                    return null;
-                }
+			    return $stm->fetchAll(PDO::FETCH_OBJ);
             } catch (PDOException $e) {
                 echo $e->getCode();
                 echo $e->getMessage();
-                echo "Problema ao buscar uma categoria";
+                echo "Problema ao buscar um categoria";
                 return null;
             }
         }

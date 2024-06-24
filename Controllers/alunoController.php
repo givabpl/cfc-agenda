@@ -68,8 +68,7 @@
 
 				if(!$erro)
 				{
-					$categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+					$categoria = new Categoria($_POST["categoria"]);
 
 					$aluno = new Aluno(categoria: $categoria, aulas_restantes: $_POST["aulas_restantes"], nome_aluno: $_POST["nome_aluno"], celular_aluno: $_POST["celular_aluno"], obs_aluno: $_POST["obs_aluno"], imagem: $_FILES["imagem"]['name']
 					);
@@ -111,9 +110,9 @@
 			{
 				$aluno = new Aluno($_GET["id"]);
 				$alunoDAO = new alunoDAO();
-				$ret = $alunoDAO->excluir_aluno($aluno);
+				$retorno = $alunoDAO->excluir_aluno($aluno);
 			}
-			header("location:index.php?controle=alunoController&metodo=listar&msg=$ret");
+			header("location:index.php?controle=alunoController&metodo=listar&msg=$retorno");
 		}
 
         // ALTERAR ALUNO

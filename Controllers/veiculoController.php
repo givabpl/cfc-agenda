@@ -17,25 +17,25 @@
 			if($_POST)
 			{
 				$erro = false;
+
+				if(empty($_POST["categoria"]))
+				{
+					$msg[0] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
                 if(empty($_POST["modelo"]))
 				{
-					$msg[0] = "Preencha o modelo";
+					$msg[1] = "Preencha o modelo";
 					$erro = true;
 				}
 				if(empty($_POST["cor"]))
 				{
-					$msg[1] = "Preencha a cor";
-					$erro = true;
-				}
-                if(empty($_POST["categoria"]))
-				{
-					$msg[2] = "Selecione pelo menos uma categoria";
+					$msg[2] = "Preencha a cor";
 					$erro = true;
 				}
                 if(!$erro)
 				{
-					$categoriaDAO = new categoriaDAO();
-					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
+					$categoria = new Categoria($_POST["categoria"]);
 
 					$veiculo = new Veiculo(categoria:$categoria, modelo:$_POST["modelo"], cor:$_POST["cor"]);
 					
@@ -80,47 +80,49 @@
 
         // Atualizar veiculo
         public function alterar()
-        {
-            if(isset($_GET["id"]))
+		{
+			$msg = array("","","");
+
+			if ($_GET && isset($_GET["id"]))
 			{
 				$veiculoDAO = new veiculoDAO();
-				$retorno = $veiculoDAO->buscar_um_veiculo($_GET["id"]);
+				$veiculo = $veiculoDAO->buscar_um_veiculo($_GET["id"]);
 			}
-			
-			$msg = array("","","");
-			if($_POST)
+
+			if ($_POST)
 			{
 				$erro = false;
+
+				if(empty($_POST["categoria"]))
+				{
+					$msg[0] = "Selecione pelo menos uma categoria";
+					$erro = true;
+				}
                 if(empty($_POST["modelo"]))
 				{
-					$msg[0] = "Preencha o modelo";
+					$msg[1] = "Preencha o modelo";
 					$erro = true;
 				}
 				if(empty($_POST["cor"]))
 				{
-					$msg[1] = "Preencha a cor";
+					$msg[2] = "Preencha a cor";
 					$erro = true;
 				}
-                if(empty($_POST["categoria"]))
-				{
-					$msg[2] = "Selecione pelo menos uma categoria";
-					$erro = true;
-				}
-                if(!$erro)
+
+				if (!$erro)
 				{
 					$categoriaDAO = new categoriaDAO();
 					$categoria = $categoriaDAO->buscar_uma_categoria($_POST["categoria"]);
-
-					$veiculo = new Veiculo(modelo:$_POST["modelo"], cor:$_POST["cor"], categoria:$categoria);
+					$veiculo = new Veiculo(categoria: $categoria, id_veiculo: $_POST["id"], modelo: $_POST["modelo"], cor: $_POST["cor"]);
 					
 					$veiculoDAO = new veiculoDAO();
-					$ret = $veiculoDAO->inserir($veiculo);
+					$ret = $veiculoDAO->alterar_veiculo($veiculo);
 					header("location:index.php?controle=veiculoController&metodo=listar&msg=$ret");
 				}
-                require_once "Views/edit-veiculo.php";
-            }
-			
-        }
+			}
+			require_once "views/editar-veiculo.php";
+		}
+
 
 		// gerar pdf de veiculos
         public function gerar_pdf()

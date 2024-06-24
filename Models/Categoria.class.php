@@ -14,13 +14,4 @@
         {
             return $this->descritivo;
         }
-
-        public function setIdCategoria($id_categoria)
-        {
-            $this->id_categoria = $id_categoria;
-        }
-        public function setDescritivo($descritivo)
-        {
-            $this->descritivo = $descritivo;
-        }
     }

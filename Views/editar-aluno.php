@@ -6,7 +6,9 @@
     <div class="container">
         <form class="form-control" action="#" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $aluno->getIdAluno(); ?>">
+
             <br><br>
+
             <div class="mb-3">
                 <label for="aulas_restantes" class="form-label">Aulas Restantes</label>
                 <input type="number" class="form-control" name="aulas_restantes" id="aulas_restantes" value="<?php echo $aluno->getAulasRestantes(); ?>">
@@ -14,7 +16,9 @@
                     <?php echo $msg[1] != "" ? $msg[1] : ''; ?>
                 </div>
             </div>
+            
             <br><br>
+            
             <div class="mb-3">
                 <label for="nome_aluno" class="form-label">Nome do aluno</label>
                 <input type="text" class="form-control" id="nome_aluno" name="nome_aluno" value="<?php echo $aluno->getNomeAluno(); ?>">

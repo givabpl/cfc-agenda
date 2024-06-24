@@ -1,4 +1,5 @@
 <?php
+	// METODOS : BANCO DE DADOS
 	class usuarioDAO extends Conexao
 	{
 		public function __construct()
@@ -6,6 +7,7 @@
 			parent:: __construct();
 		}
 		
+		// AUTENTIVAR USUARIO
 		public function autenticar($usuario)
 		{
 			$sql = "SELECT idusuario, tipo FROM usuarios WHERE email = ? AND senha = ?";
@@ -17,6 +19,8 @@
 			return $stm->fetchAll(PDO::FETCH_OBJ);
 			
 		}
+
+		// INSERIR USUARIO
 		public function inserir($usuario)
 		{
 			$sql = "INSERT INTO usuarios (nome, tipo, email, senha) VALUES(?,?,?,?)";
@@ -37,6 +41,8 @@
 				return 0;
 			}
 		}
+
+		// BUSCAR EMAIL
 		public function buscar_email($usuario)
 		{
 			$sql = "SELECT email FROM usuarios WHERE email = ?";
